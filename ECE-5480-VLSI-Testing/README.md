@@ -1,4 +1,4 @@
-# ECE-5750 Computer Architecture
+# ECE-5480 VLSI Testing and Security
 
 ## Lecture Notes
 
