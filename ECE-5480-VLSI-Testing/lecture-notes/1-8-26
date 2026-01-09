@@ -1,0 +1,99 @@
+# Lecture 2
+
+## Cost of testing
+* Design for testability (DFT)
+  * area overhead and yeild reduction
+  * design to be easier to test
+* Software processes
+  * test generation and fault simulation
+* Manufacturing test
+  * Automatic Test Equipment (ATE) Cost
+
+### DFT
+* circuits and processes built into chip
+* self tests
+* probes
+* Example
+  * Block 1 collects input, communicates to block 2 which generates output
+  * Block 1 is not observable
+  * Block 2 is not controllable
+    * the whole circuit is a black box, we can only apply inputs and read outputs
+    * reduces testability
+  * to DFT we can add gates to improve the observability of block 1 and controllability of block 2
+
+### ATE
+* Purchase of ATE tester (0.5-1 GHz, 1024 pins)
+  * fixed cost: $4M
+  * variable cost: $5000 per pin
+* Running cost
+  * Annual maintenance: 2% of price
+  * operating cost: $1.5M per year
+* total test cost: 11 cents/minute
+* 6 seconds per chip test
+  * 66 cents per test
+
+## Fault Modeling
+
+C = A'B+AB'
+assume a stuck at one fault at the output of AB'
+
+generate an input vector to detect this fault
+
+|A B|C|fault|
+|---|-|-----|
+|0 0|0|1|
+|0 1|1|1|
+|1 0|1|1|
+|1 1|0|1|
+
+00 or 01 will detect the fault
+
+## Roles of testing
+
+* Detection
+  * detect if faults are present
+* Diagnosis
+  * determine type of fault
+* Device characterization
+  * determine and correct errors in design or test
+* Failure Mode analysis
+  * Determine manufacturing process errors
+
+without fault models we do not know what to test for, we cannot exhaustively test
+
+## Structural model
+
+* Netlist Format
+* Structural Verilog
+  * no behavioral ode
+    * no if else
+    * no while loops
+  * only basic gates and wires
+
+## Worksheet
+
+```verilog
+module  HA(a,b,c,f);
+            input a,b;
+            output c,f;
+
+            wire d,e
+
+AND     A1(.A1(a),.A2(b),.Z(c));
+OR      O1(.A1(a),.A2(b),.Z(d));
+NOT     N1(.I(c),.ZN(e));
+AND     A2(.A1(d),.A2(e),.Z(f));
+
+module  FA(A,B,C,carry,sum)
+            input a,b,c;
+            output carry,sum;
+
+            wire D,E,F;
+
+HA      HA1(.a(A),.b(B),.c(D),.f(E));
+HA      HA2(.a(E),.b(C),.c(F),.f(sum));
+OR      OR1(.A1(D),.A2(F),.Z(carry));
+```
+ ## Standard Cell Libraries
+
+ we use the TSMC 45nm Library
