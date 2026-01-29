@@ -1,0 +1,71 @@
+\section{STAKEHOLDER REQUIREMENTS}
+
+The following requirements represent the needs and expectations of all stakeholders, including
+drone pilots, system operators, project sponsors, safety personnel, and integration engineers. 
+These requirements describe \emph{what} the system must achieve from a user and stakeholder 
+perspective, without specifying technical implementation details.
+
+\begin{enumerate}
+
+    % --------------------------------------------------
+    % Core Functionality
+    % --------------------------------------------------
+    \item \textbf{Live Video Transmission:} \\
+          The system shall transmit a real-time digital video feed from the drone-mounted camera 
+          to the pilot’s ground display (FPV goggles or HDMI monitor) with minimal noticeable delay.
+
+    % --------------------------------------------------
+    % Transmission Mode Flexibility
+    % --------------------------------------------------
+    \item \textbf{Selectable Transmission Modes:} \\
+          The user shall be able to select between:
+          \begin{itemize}
+              \item \textbf{Low-Latency Mode} (unconfirmed packets for racing/fast response)
+              \item \textbf{High-Quality Mode} (confirmed packet retransmission for improved clarity)
+          \end{itemize}
+          The mode selection shall be intuitive and accessible through the ground station interface.
+
+    % --------------------------------------------------
+    % Reliability and Connection Recovery
+    % --------------------------------------------------
+    \item \textbf{Automatic Link Recovery:} \\
+          The system shall automatically detect, handle, and recover from temporary signal loss 
+          without requiring user intervention. Video connection shall re-establish as soon as RF 
+          conditions permit.
+
+    % --------------------------------------------------
+    % Ease of Use
+    % --------------------------------------------------
+    \item \textbf{User-Friendly Operation:} \\
+          The system shall be easy to install, configure, and operate for a first-time FPV pilot. 
+          Basic setup (connection, channel selection, and display output) shall require minimal steps 
+          and shall not require specialized technical knowledge.
+
+    % --------------------------------------------------
+    % Physical Robustness
+    % --------------------------------------------------
+    \item \textbf{Environmental and Mechanical Durability:} \\
+          The drone-mounted module shall be capable of withstanding:
+          \begin{itemize}
+              \item Typical drone vibration during flight  
+              \item Light to moderate impacts from crashes  
+              \item Normal outdoor operating conditions (sunlight, temperature variations, dust exposure)
+          \end{itemize}
+          without degradation of performance.
+
+    % --------------------------------------------------
+    % Compatibility
+    % --------------------------------------------------
+    \item \textbf{Flight Controller Integration:} \\
+          The system shall be compatible with commonly used FPV drone flight controllers and firmware 
+          such as Betaflight. It shall support remote configuration, telemetry exchange, and 
+          communication with onboard systems.
+
+    % --------------------------------------------------
+    % Safety Expectations
+    % --------------------------------------------------
+    \item \textbf{Safe Operation:} \\
+          The system shall operate within regulatory RF limits and shall not interfere with 
+          flight-critical electronics on the aircraft.
+
+\end{enumerate}

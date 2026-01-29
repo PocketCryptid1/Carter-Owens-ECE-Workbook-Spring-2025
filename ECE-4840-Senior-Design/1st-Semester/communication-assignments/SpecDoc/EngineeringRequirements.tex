@@ -1,0 +1,99 @@
+\section{ENGINEERING REQUIREMENTS}
+
+The following engineering requirements translate stakeholder needs into measurable, testable, 
+and implementation-specific constraints. Each requirement shall be verified through analysis, 
+inspection, testing, or demonstration as defined in the Verification Plan.
+
+\begin{enumerate}
+
+% --------------------------------------------------
+% Mechanical / Physical Requirements
+% --------------------------------------------------
+\item \textbf{Transmitter Physical Envelope:} \\
+      The drone-mounted transmitter (VTX) shall not exceed a physical size of 
+      $40\,\text{mm} \times 30\,\text{mm} \times 10\,\text{mm}$ and shall have a total mass 
+      of less than $25\,\text{g}$ (including enclosure and connectors).
+
+\item \textbf{Receiver Physical Envelope:} \\
+      The ground-based receiver (VRX) shall not exceed a physical size of 
+      $80\,\text{mm} \times 60\,\text{mm} \times 20\,\text{mm}$ and shall have a total mass 
+      of less than $100\,\text{g}$ (excluding external display or goggles).
+
+% --------------------------------------------------
+% Environmental Requirements
+% --------------------------------------------------
+\item \textbf{Environmental Operating Conditions:} \\
+      Both the VTX and VRX modules shall operate within:
+      \begin{itemize}
+          \item Temperature range of $0^\circ\text{C}$ to $50^\circ\text{C}$
+          \item Relative humidity range of $10\%\text{RH}$ to $90\%\text{RH}$ non-condensing
+      \end{itemize}
+
+\item \textbf{Mechanical Durability:} \\
+      The VTX assembly shall withstand:
+      \begin{itemize}
+          \item Vibrations typical of multirotor drone flight (up to 5\,g RMS)
+          \item Light to moderate impact forces consistent with hobby-class drone crashes
+          \item Exposure to airborne dust and light moisture without functional degradation 
+      \end{itemize}
+
+% --------------------------------------------------
+% Performance Requirements
+% --------------------------------------------------
+\item \textbf{End-to-End Latency:} \\
+      The system shall achieve an end-to-end video latency of:
+      \begin{itemize}
+          \item Less than $30\,\text{ms}$ in Low-Latency (unconfirmed packet) mode
+          \item Less than $120\,\text{ms}$ in High-Quality (confirmed packet) mode
+      \end{itemize}
+
+\item \textbf{Video Output Format:} \\
+      The VRX shall provide a digital video output over a standard HDMI interface compliant 
+      with HDMI 1.4 or higher, capable of supporting $720\text{p}$ and $1080\text{p}$ video.
+
+\item \textbf{Antenna Interfaces:} \\
+      Both VTX and VRX shall use industry-standard $50\,\Omega$ RF connectors suitable for FPV 
+      antennas (e.g., \texttt{U.FL}, \texttt{MMCX}, or \texttt{SMA}), as determined by system 
+      packaging and RF design.
+
+% --------------------------------------------------
+% Power Requirements
+% --------------------------------------------------
+\item \textbf{Transmitter Power Source:} \\
+      The VTX shall operate from the drone's battery power system (nominal $7.4$–$22.2\,\text{V}$) 
+      and shall include onboard regulation to supply all internal components.
+
+\item \textbf{Receiver Power Source:} \\
+      The VRX shall operate from either:
+      \begin{itemize}
+          \item A wall-powered AC adapter (5–12\,V DC), or 
+          \item A portable Li-ion/LiPo power pack
+      \end{itemize}
+
+% --------------------------------------------------
+% Firmware / Software Requirements
+% --------------------------------------------------
+\item \textbf{Transmission Mode Switching:} \\
+      The system firmware shall support real-time switching between Low-Latency and 
+      High-Quality modes without requiring system reboot or loss of RF link.
+
+\item \textbf{Automatic Reconnection:} \\
+      The system shall automatically detect loss of RF link and attempt reconnection at 
+      least once per second until the link is restored.
+
+\item \textbf{Flight Controller Integration:} \\
+      The VTX shall communicate with a drone flight controller via MSP or UART-based protocol 
+      to support telemetry exchange, configuration commands, and system-status reporting.
+
+% --------------------------------------------------
+% RF Requirements
+% --------------------------------------------------
+\item \textbf{RF Output Power and Spectral Compliance:} \\
+      The VTX shall comply with FCC Part 15 unlicensed transmission limits in the 
+      5.8\,GHz ISM band, including spectral mask and harmonic emission constraints.
+
+\item \textbf{Two-Way RF Communication:} \\
+      The system shall support bidirectional data exchange (telemetry and acknowledgment packets) 
+      between VTX and VRX using the same RF link, with a minimum uplink data rate of 50\,kbps.
+
+\end{enumerate}

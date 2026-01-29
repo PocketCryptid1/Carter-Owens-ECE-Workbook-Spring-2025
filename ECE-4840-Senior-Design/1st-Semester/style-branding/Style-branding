@@ -1,0 +1,19 @@
+Logo/Gradient:
+    #034159
+    #025951
+    #02735E
+    #038C3E
+    #0CF25D
+
+Background
+    #212121
+
+Header Text:
+    Font: Electrolize
+    Color: #ffffff
+
+Body Text
+    font: Saira
+    Color: #adadad
+
+    

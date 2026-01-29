@@ -1,0 +1,58 @@
+\section{SCOPE}
+
+\begin{enumerate}[(a)]
+
+    % --------------------------------------------------
+    % General Description
+    % --------------------------------------------------
+    \item \textbf{\underline{General:}} \\
+    Prism is a high-performance digital video transmission system designed for FPV (First Person View) drone operation. 
+    The system enables real-time video streaming from an onboard camera mounted on a racing drone to a ground-based receiver, 
+    such as FPV goggles or an HDMI-compatible display.
+
+    Prism includes both a drone-mounted Video Transmitter (VTX) module and a ground-based Video Receiver (VRX) module. 
+    The system operates over a Wi-Fi–based digital RF link and supports two distinct transmission modes:
+
+    \begin{itemize}
+        \item \textbf{Low-Latency Mode (Unconfirmed Packets):}  
+        Optimized for fast response and minimal transmission delay, suitable for high-speed drone racing.
+        
+        \item \textbf{High-Quality Mode (Confirmed Packets):}  
+        Enables retransmission of missing packets for improved video clarity and reduced artifacts at the cost of additional latency.
+    \end{itemize}
+
+    The system also supports two-way communication between the VTX and VRX, enabling features such as:
+    \begin{itemize}
+        \item Uplink telemetry and control signals
+        \item Acknowledgment packets for video retransmission
+        \item Remote configuration of VTX parameters from the ground station
+    \end{itemize}
+
+    Prism is intended as a proof-of-concept implementation for a modular, extensible FPV digital link suitable for educational, research, and experimental drone racing applications.
+
+    \begin{figure}[h]
+    \centering
+    \includegraphics[width=0.95\textwidth]{prism-block-diagram.png}
+    \caption{High-Level System Block Diagram for Prism Digital FPV System}
+    \label{fig:blockdiagram}
+\end{figure}
+
+
+    \vspace{1em}
+
+    % --------------------------------------------------
+    % Acronyms
+    % --------------------------------------------------
+    \item \textbf{\underline{Acronyms:}} \\
+    \begin{tabular}{ll}
+        \textbf{FPV} & First Person View \\
+        \textbf{VTX} & Video Transmitter \\
+        \textbf{VRX} & Video Receiver \\
+        \textbf{SBC} & Single-Board Computer \\
+        \textbf{ARQ} & Automatic Repeat reQuest (Acknowledged Packet Retransmission) \\
+        \textbf{RF}  & Radio Frequency \\
+        \textbf{H.264} & Advanced Video Coding Compression Standard \\
+        \textbf{MSP} & Multiwii Serial Protocol (Betaflight Communication) \\
+    \end{tabular}
+
+\end{enumerate}

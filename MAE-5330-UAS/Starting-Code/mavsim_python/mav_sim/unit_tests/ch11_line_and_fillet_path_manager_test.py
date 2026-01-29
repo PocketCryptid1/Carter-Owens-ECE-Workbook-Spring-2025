@@ -15,6 +15,7 @@ from mav_sim.chap11.path_manager_utilities import (
     inHalfSpace,
 )
 from mav_sim.message_types.msg_path import MsgPath
+
 PRECISION = 1e-4
 
 #############  utility functions ######################

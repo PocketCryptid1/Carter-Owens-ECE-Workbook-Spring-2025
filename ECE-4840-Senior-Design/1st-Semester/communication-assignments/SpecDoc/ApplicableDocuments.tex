@@ -1,0 +1,51 @@
+\section{APPLICABLE DOCUMENTS}
+
+The following documents shall form part of the specifications for this project. 
+In the event of a conflict between requirements, priority shall first go to the project contract,
+second to this specification document, and lastly to the referenced documents listed herein.
+
+\begin{enumerate}[(a)]
+
+    % --------------------------------------------------
+    % Government / Regulatory Documents
+    % --------------------------------------------------
+    \item \textbf{\underline{Government and Regulatory Documents}} \\
+    The following regulatory standards apply to wireless transmission systems operating in the 
+    2.4\,GHz and 5.8\,GHz ISM bands:
+    \begin{itemize}
+        \item \textbf{FCC Title 47 CFR Part 15} — Radio Frequency Devices  
+              (Unlicensed transmitter power limits, spectral mask, spurious emissions)
+        \item \textbf{FCC OET Bulletin No. 65} — Human Exposure to RF Fields
+        \item \textbf{NTIA Manual of Regulations and Procedures for Federal Radio Frequency Management}
+        \item \textbf{IEC 62368-1} — Audio/Video, Information, and Communication Technology Equipment Safety
+    \end{itemize}
+
+    \vspace{0.5em}
+
+    % --------------------------------------------------
+    % Industry / Technical Documents
+    % --------------------------------------------------
+    \item \textbf{\underline{Industry Documents}} \\
+    The following technical standards and specifications are applicable to the Prism system:
+    \begin{itemize}
+        \item \textbf{IEEE 802.11-2020} — Standard for Wireless LAN MAC and PHY  
+              (Applicable to Wi-Fi–based transport used in the Prism system)
+        \item \textbf{IEEE 802.11n/ac Standards} — High Throughput Extensions  
+              (Relevant to raw-frame injection and modulation behavior)
+        \item \textbf{IETF RFC 3984} — RTP Payload Format for H.264 Video  
+              (Applicable to NAL unit handling and fragmentation)
+        \item \textbf{ISO/IEC 14496-10} — H.264/AVC Video Coding Standard  
+              (Defines compression format used by onboard hardware encoder)
+        \item \textbf{Betaflight MSP Protocol Specification}  
+              (Defines communication between flight controller and Prism VTX)
+        \item \textbf{USB Video Class (UVC) Specification 1.5}  
+              (Applicable if USB-based H.264 encoders/cameras are used)
+        \item \textbf{Raspberry Pi Compute Module 4 (CM4) Hardware Specification}  
+              (Applicable to SBC selection and interfacing)
+        \item \textbf{Vendor Datasheets for Wi-Fi Modules}  
+              (For chipset-specific RF, power, and interface constraints)
+        \item \textbf{Vendor Datasheets for RF Front-End Components}  
+              (Bandpass filters, LNAs, and power amplifiers used in RX/TX chain)
+    \end{itemize}
+
+\end{enumerate}
