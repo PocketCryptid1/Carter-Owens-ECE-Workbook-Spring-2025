@@ -1,0 +1,32 @@
+#include "cache.h"
+
+void CACHE::l2c_prefetcher_initialize() 
+{
+    cout << "CPU " << cpu << " L2C next line advanced prefetcher" << endl;
+}
+
+uint32_t CACHE::l2c_prefetcher_operate(uint64_t addr, uint64_t ip, uint8_t cache_hit, uint8_t type, uint32_t metadata_in)
+{
+    // Prefetch two successive cache lines
+    uint64_t pf_addr1 = ((addr>>LOG2_BLOCK_SIZE)+1) << LOG2_BLOCK_SIZE;
+    uint64_t pf_addr2 = ((addr>>LOG2_BLOCK_SIZE)+2) << LOG2_BLOCK_SIZE;
+
+    DP ( if (warmup_complete[cpu]) {
+    cout << "[" << NAME << "] " << __func__ << hex << " base_cl: " << (addr>>LOG2_BLOCK_SIZE);
+    cout << " pf_cl1: " << (pf_addr1>>LOG2_BLOCK_SIZE) << " pf_cl2: " << (pf_addr2>>LOG2_BLOCK_SIZE) << " ip: " << ip << " cache_hit: " << +cache_hit << " type: " << +type << endl; });
+
+    prefetch_line(ip, addr, pf_addr1, FILL_L2, 0);
+    prefetch_line(ip, addr, pf_addr2, FILL_L2, 0);
+
+    return metadata_in;
+}
+
+uint32_t CACHE::l2c_prefetcher_cache_fill(uint64_t addr, uint32_t set, uint32_t way, uint8_t prefetch, uint64_t evicted_addr, uint32_t metadata_in)
+{
+  return metadata_in;
+}
+
+void CACHE::l2c_prefetcher_final_stats()
+{
+    cout << "CPU " << cpu << " L2C next line advanced prefetcher final stats" << endl;
+}

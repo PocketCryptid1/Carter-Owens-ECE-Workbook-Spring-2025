@@ -1,0 +1,54 @@
+Found 1 binary configuration(s)
+Found 20 trace file(s)
+
+
+============================================================
+Running experiments for: bimodal-no-no-no-no-lru-1core
+============================================================
+Running: bimodal-no-no-no-no-lru-1core with 600.perlbench_s-210B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 602.gcc_s-734B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 603.bwaves_s-3699B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 605.mcf_s-665B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 607.cactuBSSN_s-2421B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 619.lbm_s-4268B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 620.omnetpp_s-874B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 621.wrf_s-575B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 623.xalancbmk_s-700B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 625.x264_s-18B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 627.cam4_s-573B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 628.pop2_s-17B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 631.deepsjeng_s-928B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 638.imagick_s-10316B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 641.leela_s-800B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 644.nab_s-5853B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 648.exchange2_s-1699B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 649.fotonik3d_s-1176B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 654.roms_s-842B.champsimtrace.xz... ✓
+Running: bimodal-no-no-no-no-lru-1core with 657.xz_s-3167B.champsimtrace.xz... ✓
+
+Completed: 20/20 successful
+
+Collecting results...
+Warning: Result file not found: 600.perlbench_s-210B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 602.gcc_s-734B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 603.bwaves_s-3699B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 605.mcf_s-665B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 607.cactuBSSN_s-2421B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 619.lbm_s-4268B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 620.omnetpp_s-874B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 621.wrf_s-575B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 623.xalancbmk_s-700B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 625.x264_s-18B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 627.cam4_s-573B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 628.pop2_s-17B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 631.deepsjeng_s-928B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 638.imagick_s-10316B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 641.leela_s-800B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 644.nab_s-5853B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 648.exchange2_s-1699B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 649.fotonik3d_s-1176B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 654.roms_s-842B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Warning: Result file not found: 657.xz_s-3167B.champsimtrace.xz-bimodal-no-no-no-no-lru-1core-1core.txt
+Report generated: results_bimodal-no-no-no-no-lru-1core.txt
+
+Results summary for bimodal-no-no-no-no-lru-1core:

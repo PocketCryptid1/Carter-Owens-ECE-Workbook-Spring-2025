@@ -19,6 +19,8 @@ for next iteration, use a CVBS to CSI chip.
 left: header side
 right: ipex connector side
 
+most likely USB
+
 | left | right |
 |------|-------|
 | x    | x     |

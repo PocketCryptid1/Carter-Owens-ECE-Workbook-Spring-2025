@@ -1,0 +1,14 @@
+*.mkv
+*.zip
+*.pdf
+
+# Trace files
+*/*traces/*
+*/traces/*
+*.champsimtrace.xz
+
+# Test archives (large pickle files)
+*_test_archive.pkl
+
+# Virtual environments
+mav_venv/
