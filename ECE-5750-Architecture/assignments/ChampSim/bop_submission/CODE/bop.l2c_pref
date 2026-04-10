@@ -1,0 +1,473 @@
+/**
+ * Best Offset Prefetcher (BOP) Implementation for ChampSim
+ * 
+ * Based on the HPCA 2016 paper:
+ * "Best-Offset Hardware Prefetching" by Pierre Michaud
+ * 
+ * This implementation attaches to L2 cache and is triggered only by LOAD accesses.
+ * 
+ * Key Design Components:
+ * 1. Recent Request Table (RR): Tracks recently accessed cache line addresses
+ *    - Implemented as a fully associative structure with FIFO replacement
+ *    - Size: 256 entries (as per assignment parameters)
+ * 
+ * 2. Offset Score Table: Maintains scores for candidate offsets
+ *    - Each offset has an associated score that increases when prefetches are timely
+ * 
+ * 3. Learning Phase: Evaluates candidate offsets by testing them against RR
+ *    - A phase consists of multiple rounds
+ *    - Each round tests one candidate offset
+ *    - The best offset from the current phase is used for prefetching
+ * 
+ * BOP Parameters (from assignment):
+ * - MAX_ROUNDS: 100
+ * - RR_SIZE: 256 entries
+ * - PREFETCH_DEGREE: 4
+ * - Candidate offsets: 1,2,3,4,5,6,8,9,10,12,15,16,18,20,24,25,27,30,32,36,40,45,48,50,54,60
+ */
+
+#include "cache.h"
+#include <vector>
+#include <deque>
+#include <algorithm>
+
+using namespace std;
+
+// =============================================================================
+// BOP Configuration Parameters
+// =============================================================================
+
+// Maximum number of rounds per learning phase
+#define BOP_MAX_ROUNDS 100
+
+// Recent Request (RR) table size - fully associative with FIFO replacement
+#define BOP_RR_SIZE 256
+
+// Number of prefetch requests per trigger (prefetch degree)
+#define BOP_PREFETCH_DEGREE 4
+
+// Score threshold to consider an offset as "good" and end phase early
+#define BOP_SCORE_MAX 31
+
+// Minimum score to use an offset for prefetching
+#define BOP_BAD_SCORE 1
+
+// =============================================================================
+// Candidate Offsets (from assignment specification)
+// These are the offsets (in cache lines) that BOP will evaluate
+// =============================================================================
+const int BOP_CANDIDATES[] = {1, 2, 3, 4, 5, 6, 8, 9, 10, 12, 15, 16, 
+                               18, 20, 24, 25, 27, 30, 32, 36, 40, 45, 
+                               48, 50, 54, 60};
+#define BOP_NUM_CANDIDATES (sizeof(BOP_CANDIDATES) / sizeof(BOP_CANDIDATES[0]))
+
+// =============================================================================
+// BOP Data Structures
+// =============================================================================
+
+/**
+ * Recent Request Table (RR)
+ * 
+ * The RR table stores recently accessed cache line addresses (without the block
+ * offset bits). It is used during the learning phase to detect timely prefetches.
+ * 
+ * When a cache line is accessed, we check if (addr - offset) exists in RR for
+ * each candidate offset. If found, it means a prefetch with that offset would
+ * have been timely, so we increment that offset's score.
+ * 
+ * Implementation: Fully associative structure with FIFO replacement policy
+ */
+struct RecentRequestTable {
+    deque<uint64_t> entries;  // FIFO queue of recent cache line addresses
+    
+    /**
+     * Insert a new cache line address into RR
+     * Uses FIFO replacement when full
+     * @return true if an entry was evicted, false otherwise
+     */
+    bool insert(uint64_t cache_line_addr) {
+        // Check if address already exists - if so, don't insert again
+        for (const auto& entry : entries) {
+            if (entry == cache_line_addr) {
+                return false;  // Already in RR, no eviction
+            }
+        }
+        
+        // Evict oldest entry if full (FIFO replacement)
+        bool evicted = false;
+        if (entries.size() >= BOP_RR_SIZE) {
+            entries.pop_front();
+            evicted = true;
+        }
+        
+        // Insert new entry at the back
+        entries.push_back(cache_line_addr);
+        return evicted;
+    }
+    
+    /**
+     * Search RR for a specific cache line address
+     * Returns true if found
+     */
+    bool search(uint64_t cache_line_addr) const {
+        for (const auto& entry : entries) {
+            if (entry == cache_line_addr) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Clear all entries in RR
+     */
+    void clear() {
+        entries.clear();
+    }
+    
+    /**
+     * Get current size of RR
+     */
+    size_t size() const {
+        return entries.size();
+    }
+};
+
+/**
+ * BOP Prefetcher State
+ * 
+ * Maintains all state needed for the Best Offset Prefetcher including:
+ * - Recent Request Table
+ * - Offset scores for the current learning phase
+ * - Current best offset for prefetching
+ * - Learning phase control variables
+ */
+struct BOPState {
+    // Recent Request Table
+    RecentRequestTable rr;
+    
+    // Scores for each candidate offset (reset each phase)
+    int scores[BOP_NUM_CANDIDATES];
+    
+    // Current best offset (in cache lines) for prefetching
+    int best_offset;
+    
+    // Learning phase state
+    int current_round;           // Current round within the phase (0 to MAX_ROUNDS-1)
+    
+    // Statistics counters
+    uint64_t stat_phases_completed;
+    uint64_t stat_end_phase_max_round;  // Phases ended due to max rounds
+    uint64_t stat_end_phase_max_score;  // Phases ended due to max score achieved
+    uint64_t stat_fill_called;
+    uint64_t stat_fill_insert_rr;
+    uint64_t stat_insert_rr_hit;
+    uint64_t stat_insert_rr_evict;
+    uint64_t stat_insert_rr_insert;
+    uint64_t stat_pref_buffer_buffered;
+    uint64_t stat_pref_buffer_spilled;
+    uint64_t stat_pref_buffer_issued;
+    uint64_t stat_pref_issued;
+    
+    /**
+     * Initialize BOP state
+     */
+    void init() {
+        rr.clear();
+        best_offset = 1;  // Default to offset of 1 (next-line prefetching)
+        current_round = 0;
+        
+        // Initialize all scores to 0
+        for (size_t i = 0; i < BOP_NUM_CANDIDATES; i++) {
+            scores[i] = 0;
+        }
+        
+        // Initialize statistics
+        stat_phases_completed = 0;
+        stat_end_phase_max_round = 0;
+        stat_end_phase_max_score = 0;
+        stat_fill_called = 0;
+        stat_fill_insert_rr = 0;
+        stat_insert_rr_hit = 0;
+        stat_insert_rr_evict = 0;
+        stat_insert_rr_insert = 0;
+        stat_pref_buffer_buffered = 0;
+        stat_pref_buffer_spilled = 0;
+        stat_pref_buffer_issued = 0;
+        stat_pref_issued = 0;
+    }
+    
+    /**
+     * Reset scores and phase state for a new learning phase
+     */
+    void reset_phase() {
+        for (size_t i = 0; i < BOP_NUM_CANDIDATES; i++) {
+            scores[i] = 0;
+        }
+        current_round = 0;
+    }
+    
+    /**
+     * Find the candidate offset with the highest score
+     * Returns the offset value (not index)
+     */
+    int find_best_offset() const {
+        int best_idx = 0;
+        int best_score = scores[0];
+        
+        for (size_t i = 1; i < BOP_NUM_CANDIDATES; i++) {
+            if (scores[i] > best_score) {
+                best_score = scores[i];
+                best_idx = i;
+            }
+        }
+        
+        // Only return the offset if score is good enough
+        if (best_score >= BOP_BAD_SCORE) {
+            return BOP_CANDIDATES[best_idx];
+        }
+        return 1;  // Default to 1 if no good candidate found
+    }
+    
+    /**
+     * Find the index of candidate with max score
+     */
+    int find_winner_idx() const {
+        for (size_t i = 0; i < BOP_NUM_CANDIDATES; i++) {
+            if (scores[i] >= BOP_SCORE_MAX) {
+                return (int)i;
+            }
+        }
+        return -1;  // No winner
+    }
+};
+
+// Global BOP state (one per CPU, but we only support single core here)
+static BOPState bop_state;
+
+// =============================================================================
+// BOP Helper Functions
+// =============================================================================
+
+/**
+ * Check if two addresses are on the same physical page
+ * This is important because prefetches should not cross page boundaries
+ * to avoid causing TLB misses or page faults
+ */
+static inline bool same_page(uint64_t addr1, uint64_t addr2) {
+    return (addr1 >> LOG2_PAGE_SIZE) == (addr2 >> LOG2_PAGE_SIZE);
+}
+
+/**
+ * Convert a full address to a cache line address (remove block offset bits)
+ */
+static inline uint64_t cache_line_addr(uint64_t addr) {
+    return addr >> LOG2_BLOCK_SIZE;
+}
+
+/**
+ * Learning phase logic - test all candidate offsets
+ * 
+ * For each memory access, we test ALL candidate offsets against RR.
+ * If (current_addr - candidate_offset) is in RR, it means a prefetch
+ * with that offset would have been timely, so we increment the score.
+ * 
+ * After testing, we check if:
+ * 1. Any candidate has reached BOP_SCORE_MAX -> end phase with that winner
+ * 2. We've completed BOP_MAX_ROUNDS -> end phase with best score so far
+ */
+static void bop_learn(uint64_t line_addr) {
+    // Test all candidate offsets against RR
+    for (size_t i = 0; i < BOP_NUM_CANDIDATES; i++) {
+        int offset = BOP_CANDIDATES[i];
+        
+        // Calculate the address we're looking for in RR
+        // If this address is in RR, it means a prefetch with this offset
+        // would have brought the current line into cache at the right time
+        uint64_t test_addr = line_addr - offset;
+        
+        // Search RR for the test address
+        if (bop_state.rr.search(test_addr)) {
+            // Found! Increment score for this candidate offset
+            bop_state.scores[i]++;
+        }
+    }
+    
+    // Advance round counter
+    bop_state.current_round++;
+    
+    // Check if any candidate has reached the winning threshold
+    int winner_idx = bop_state.find_winner_idx();
+    if (winner_idx >= 0) {
+        // We have a winner! End the phase early
+        bop_state.best_offset = BOP_CANDIDATES[winner_idx];
+        bop_state.stat_end_phase_max_score++;
+        bop_state.stat_phases_completed++;
+        bop_state.reset_phase();
+        return;
+    }
+    
+    // Check if we've reached max rounds
+    if (bop_state.current_round >= BOP_MAX_ROUNDS) {
+        // Phase complete - select the best offset found
+        bop_state.best_offset = bop_state.find_best_offset();
+        
+        bop_state.stat_end_phase_max_round++;
+        bop_state.stat_phases_completed++;
+        bop_state.reset_phase();
+    }
+}
+
+// =============================================================================
+// ChampSim Prefetcher Interface Functions
+// =============================================================================
+
+/**
+ * Initialize the BOP prefetcher
+ * Called once at simulation start
+ */
+void CACHE::l2c_prefetcher_initialize() {
+    cout << "CPU " << cpu << " L2C Best Offset prefetcher" << endl;
+    bop_state.init();
+}
+
+/**
+ * Main prefetcher operation function
+ * 
+ * Called on every L2 cache access. This function:
+ * 1. Filters to only handle LOAD accesses (as per assignment requirement)
+ * 2. Runs the learning algorithm to find the best offset
+ * 3. Issues prefetch requests using the current best offset
+ * 
+ * @param addr      Full memory address of the access
+ * @param ip        Instruction pointer that caused the access
+ * @param cache_hit Whether this was a cache hit
+ * @param type      Type of access (LOAD, RFO, PREFETCH, WRITEBACK)
+ * @param metadata_in  Metadata from upper level
+ * @return Updated metadata
+ */
+uint32_t CACHE::l2c_prefetcher_operate(uint64_t addr, uint64_t ip, 
+                                        uint8_t cache_hit, uint8_t type, 
+                                        uint32_t metadata_in) {
+    // Only operate on LOAD accesses (as per assignment specification)
+    if (type != LOAD) {
+        return metadata_in;
+    }
+    
+    // Get the cache line address (block address)
+    uint64_t line_addr = cache_line_addr(addr);
+    
+    // Run the learning algorithm
+    bop_learn(line_addr);
+    
+    // Issue prefetches using the current best offset
+    // Prefetch degree determines how many prefetches to issue
+    for (int d = 1; d <= BOP_PREFETCH_DEGREE; d++) {
+        // Calculate prefetch address
+        // Prefetch address = current address + (best_offset * d) * block_size
+        uint64_t pf_line_addr = line_addr + (bop_state.best_offset * d);
+        uint64_t pf_addr = pf_line_addr << LOG2_BLOCK_SIZE;
+        
+        // Only prefetch within the same page to avoid TLB misses
+        if (same_page(addr, pf_addr)) {
+            // Issue the prefetch request
+            // Fill into L2 cache (FILL_L2)
+            int success = prefetch_line(ip, addr, pf_addr, FILL_L2, 0);
+            
+            if (success) {
+                bop_state.stat_pref_issued++;
+            }
+        }
+    }
+    
+    return metadata_in;
+}
+
+/**
+ * Handle cache fill events
+ * 
+ * Called when a cache line is filled into L2. This is where we:
+ * 1. Insert the filled cache line address into the RR table
+ * 
+ * The RR table is used during learning to detect timely prefetches.
+ * By inserting addresses on fills, we track which addresses have been
+ * recently brought into the cache.
+ * 
+ * @param addr        Address of the filled cache line
+ * @param set         Cache set where the line was placed
+ * @param way         Cache way where the line was placed
+ * @param prefetch    Whether this fill was due to a prefetch
+ * @param evicted_addr Address of the evicted cache line (if any)
+ * @param metadata_in Metadata from the prefetch request
+ * @return Updated metadata
+ */
+uint32_t CACHE::l2c_prefetcher_cache_fill(uint64_t addr, uint32_t set, 
+                                           uint32_t way, uint8_t prefetch, 
+                                           uint64_t evicted_addr, 
+                                           uint32_t metadata_in) {
+    // Get cache line address
+    uint64_t line_addr = cache_line_addr(addr);
+    
+    // Update statistics
+    bop_state.stat_fill_called++;
+    bop_state.stat_fill_insert_rr++;
+    
+    // Check if already in RR (hit)
+    bool already_in_rr = bop_state.rr.search(line_addr);
+    
+    if (already_in_rr) {
+        bop_state.stat_insert_rr_hit++;
+        // Don't insert again if already present
+    } else {
+        // Insert into RR table - the insert function handles FIFO replacement
+        bool was_evicted = bop_state.rr.insert(line_addr);
+        
+        if (was_evicted) {
+            bop_state.stat_insert_rr_evict++;
+        }
+        bop_state.stat_insert_rr_insert++;
+    }
+    
+    return metadata_in;
+}
+
+/**
+ * Print final statistics for the BOP prefetcher
+ * Called at the end of simulation
+ * 
+ * Outputs various statistics about BOP operation and the final
+ * contents of the RR table (as required by the assignment)
+ */
+void CACHE::l2c_prefetcher_final_stats() {
+    cout << "CPU " << cpu << " L2C BOP prefetcher final stats" << endl;
+    
+    // Print phase statistics
+    cout << "bop_end_phase_max_round " << bop_state.stat_end_phase_max_round << endl;
+    cout << "bop_end_phase_max_score " << bop_state.stat_end_phase_max_score << endl;
+    cout << "bop_total_phases " << bop_state.stat_phases_completed << endl;
+    
+    // Print fill statistics
+    cout << "bop_fill_called " << bop_state.stat_fill_called << endl;
+    cout << "bop_fill_insert_rr " << bop_state.stat_fill_insert_rr << endl;
+    cout << "bop_insert_rr_hit " << bop_state.stat_insert_rr_hit << endl;
+    cout << "bop_insert_rr_evict " << bop_state.stat_insert_rr_evict << endl;
+    cout << "bop_insert_rr_insert " << bop_state.stat_insert_rr_insert << endl;
+    
+    // Print prefetch buffer statistics (not used in this basic implementation)
+    cout << "bop_pref_buffer_buffered " << bop_state.stat_pref_buffer_buffered << endl;
+    cout << "bop_pref_buffer_spilled " << bop_state.stat_pref_buffer_spilled << endl;
+    cout << "bop_pref_buffer_issued " << bop_state.stat_pref_buffer_issued << endl;
+    
+    // Print prefetch issued statistics
+    cout << "bop_pref_issued " << bop_state.stat_pref_issued << endl;
+    
+    // Print the final contents of the RR table
+    // Each entry shows the index and the stored cache line address in hex
+    // This is required by the assignment specification
+    cout << endl;
+    int entry_idx = 0;
+    for (const auto& entry : bop_state.rr.entries) {
+        cout << "Entry " << entry_idx << ":   0x" << hex << entry << dec << endl;
+        entry_idx++;
+    }
+}

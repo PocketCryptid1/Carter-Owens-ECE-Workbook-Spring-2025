@@ -1,0 +1,347 @@
+
+*** ChampSim Multicore Out-of-Order Simulator ***
+
+Warmup Instructions: 1000000
+Simulation Instructions: 50000000
+Number of CPUs: 1
+LLC sets: 2048
+LLC ways: 16
+Off-chip DRAM Size: 4096 MB Channels: 1 Width: 64-bit Data Rate: 3200 MT/s
+
+CPU 0 runs /home/kchakraborty/kchak/kchak/teaching/ECE5750/Labs/prefetch/ChampSim/dpc3_traces/628.pop2_s-17B.champsimtrace.xz
+CPU 0 L2C Best Offset prefetcher
+
+Warmup complete CPU 0 instructions: 1000002 cycles: 336888 (Simulation time: 0 hr 0 min 1 sec) 
+
+Heartbeat CPU 0 instructions: 10000001 cycles: 5439035 heartbeat IPC: 1.83856 cumulative IPC: 1.76396 (Simulation time: 0 hr 0 min 15 sec) 
+Heartbeat CPU 0 instructions: 20000001 cycles: 11178079 heartbeat IPC: 1.74245 cumulative IPC: 1.75257 (Simulation time: 0 hr 0 min 29 sec) 
+Heartbeat CPU 0 instructions: 30000003 cycles: 16885504 heartbeat IPC: 1.7521 cumulative IPC: 1.75241 (Simulation time: 0 hr 0 min 44 sec) 
+Heartbeat CPU 0 instructions: 40000003 cycles: 22589911 heartbeat IPC: 1.75303 cumulative IPC: 1.75257 (Simulation time: 0 hr 0 min 59 sec) 
+Heartbeat CPU 0 instructions: 50000002 cycles: 28253567 heartbeat IPC: 1.76564 cumulative IPC: 1.75522 (Simulation time: 0 hr 1 min 14 sec) 
+Finished CPU 0 instructions: 50000003 cycles: 28473776 cumulative IPC: 1.756 (Simulation time: 0 hr 1 min 15 sec) 
+
+ChampSim completed all CPUs
+
+Region of Interest Statistics
+
+CPU 0 cumulative IPC: 1.756 instructions: 50000003 cycles: 28473776
+L1D TOTAL     ACCESS:    9374728  HIT:    8161456  MISS:    1213272
+L1D LOAD      ACCESS:    6500087  HIT:    5606040  MISS:     894047
+L1D RFO       ACCESS:    2874641  HIT:    2555416  MISS:     319225
+L1D PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1D WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1D PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1D AVERAGE MISS LATENCY: 31.88 cycles
+L1I TOTAL     ACCESS:    9761307  HIT:    9702211  MISS:      59096
+L1I LOAD      ACCESS:    9761307  HIT:    9702211  MISS:      59096
+L1I RFO       ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1I WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1I AVERAGE MISS LATENCY: 29.3929 cycles
+L2C TOTAL     ACCESS:    2479962  HIT:    1748492  MISS:     731470
+L2C LOAD      ACCESS:     952893  HIT:     712528  MISS:     240365
+L2C RFO       ACCESS:     319176  HIT:     149039  MISS:     170137
+L2C PREFETCH  ACCESS:     752464  HIT:     431786  MISS:     320678
+L2C WRITEBACK ACCESS:     455429  HIT:     455139  MISS:        290
+L2C PREFETCH  REQUESTED:     783870  ISSUED:     783870  USEFUL:     220968  USELESS:      99584
+L2C AVERAGE MISS LATENCY: 65.6175 cycles
+LLC TOTAL     ACCESS:     991274  HIT:     814931  MISS:     176343
+LLC LOAD      ACCESS:     216361  HIT:     164601  MISS:      51760
+LLC RFO       ACCESS:     170132  HIT:     159746  MISS:      10386
+LLC PREFETCH  ACCESS:     344676  HIT:     234348  MISS:     110328
+LLC WRITEBACK ACCESS:     260105  HIT:     256236  MISS:       3869
+LLC PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:      27875  USELESS:      76500
+LLC AVERAGE MISS LATENCY: 152.994 cycles
+Major fault: 0 Minor fault: 3045
+CPU 0 L2C BOP prefetcher final stats
+bop_end_phase_max_round 9721
+bop_end_phase_max_score 0
+bop_total_phases 9721
+bop_fill_called 799712
+bop_fill_insert_rr 799712
+bop_insert_rr_hit 19153
+bop_insert_rr_evict 780303
+bop_insert_rr_insert 780559
+bop_pref_buffer_buffered 0
+bop_pref_buffer_spilled 0
+bop_pref_buffer_issued 0
+bop_pref_issued 799712
+
+Entry 0:   0x1b1bc7990d3
+Entry 1:   0x1b1bc7990d4
+Entry 2:   0x1b1bc7990d5
+Entry 3:   0x263d5a44574
+Entry 4:   0x263d5a44570
+Entry 5:   0x263d5a44615
+Entry 6:   0x263d5a4416c
+Entry 7:   0x2884c8628d
+Entry 8:   0x263d5a4416d
+Entry 9:   0x1b1bc79918d
+Entry 10:   0x263d5a44658
+Entry 11:   0x263d5a44c34
+Entry 12:   0x263d5a44c35
+Entry 13:   0x263d5a44c36
+Entry 14:   0x263d5a44c32
+Entry 15:   0x263d5a44c33
+Entry 16:   0x263d5a44711
+Entry 17:   0x263d5a44712
+Entry 18:   0x3ebefeacbc0
+Entry 19:   0x3ebefeacbc1
+Entry 20:   0x263d5a44713
+Entry 21:   0x3ebefeacbc2
+Entry 22:   0x263d5a44714
+Entry 23:   0x3ebefeacbc3
+Entry 24:   0x263d5a44715
+Entry 25:   0x3ebefeacbc4
+Entry 26:   0x263d5a44716
+Entry 27:   0x3ebefeacbc5
+Entry 28:   0x263d5a44717
+Entry 29:   0x3ebefeacbc6
+Entry 30:   0x263d5a44718
+Entry 31:   0x1b1bc7990d6
+Entry 32:   0x3ebefeacbc7
+Entry 33:   0x263d5a44719
+Entry 34:   0x3ebefeacbc8
+Entry 35:   0x263d5a4471a
+Entry 36:   0x3ebefeacbc9
+Entry 37:   0x263d5a4471b
+Entry 38:   0x3ebefeacbca
+Entry 39:   0x263d5a4471c
+Entry 40:   0x3ebefeacbcb
+Entry 41:   0x263d5a4471d
+Entry 42:   0x3ebefeacbcc
+Entry 43:   0x263d5a4471e
+Entry 44:   0x3ebefeacbcd
+Entry 45:   0x263d5a4471f
+Entry 46:   0x3ebefeacbce
+Entry 47:   0x263d5a44720
+Entry 48:   0x3ebefeacbcf
+Entry 49:   0x263d5a44721
+Entry 50:   0x3ebefeacbd0
+Entry 51:   0x263d5a44722
+Entry 52:   0x3ebefeacbd1
+Entry 53:   0x263d5a44723
+Entry 54:   0x3ebefeacbd2
+Entry 55:   0x263d5a44724
+Entry 56:   0x3ebefeacbd3
+Entry 57:   0x263d5a44725
+Entry 58:   0x263d5a437a3
+Entry 59:   0x3ebefeacbd4
+Entry 60:   0x263d5a44726
+Entry 61:   0x3ebefeacbd5
+Entry 62:   0x263d5a44727
+Entry 63:   0x263d5a437a5
+Entry 64:   0x3ebefeacbd6
+Entry 65:   0x263d5a44728
+Entry 66:   0x263d5a437a6
+Entry 67:   0x3ebefeacbd7
+Entry 68:   0x263d5a44729
+Entry 69:   0x263d5a437a7
+Entry 70:   0x3ebefeacbd8
+Entry 71:   0x263d5a4472a
+Entry 72:   0x263d5a437a8
+Entry 73:   0x3ebefeacbd9
+Entry 74:   0x263d5a4472b
+Entry 75:   0x263d5a437a9
+Entry 76:   0x3ebefeacbda
+Entry 77:   0x263d5a4472c
+Entry 78:   0x3ebefeacbdb
+Entry 79:   0x263d5a4472d
+Entry 80:   0x3ebefeacbdc
+Entry 81:   0x263d5a4472e
+Entry 82:   0x263d5a437ac
+Entry 83:   0x3ebefeacbdd
+Entry 84:   0x263d5a4472f
+Entry 85:   0x3ebefeacbde
+Entry 86:   0x263d5a44730
+Entry 87:   0x3ebefeacbdf
+Entry 88:   0x263d5a44731
+Entry 89:   0x3ebefeacbe0
+Entry 90:   0x263d5a44732
+Entry 91:   0x3ebefeacbe1
+Entry 92:   0x263d5a44733
+Entry 93:   0x3ebefeacbe2
+Entry 94:   0x3ebefeacbe3
+Entry 95:   0x263d5a437b3
+Entry 96:   0x3ebefeacbe4
+Entry 97:   0x3ebefeacbe5
+Entry 98:   0x3ebefeacbe6
+Entry 99:   0x3ebefeacbe7
+Entry 100:   0x3ebefeacbe8
+Entry 101:   0x3ebefeacbe9
+Entry 102:   0x3ebefeacbea
+Entry 103:   0x3ebefeacbeb
+Entry 104:   0x3ebefeacbec
+Entry 105:   0x3ebefeacbed
+Entry 106:   0x3ebefeacbee
+Entry 107:   0x2884c862c0
+Entry 108:   0x3ebefeacbef
+Entry 109:   0x2884c862c1
+Entry 110:   0x3ebefeacbf0
+Entry 111:   0x2884c862c2
+Entry 112:   0x263d5a435c0
+Entry 113:   0x3ebefeacbf1
+Entry 114:   0x2884c862c3
+Entry 115:   0x263d5a435c1
+Entry 116:   0x3ebefeacbf2
+Entry 117:   0x2884c862c4
+Entry 118:   0x263d5a435c2
+Entry 119:   0x3ebefeacbf3
+Entry 120:   0x2884c862c5
+Entry 121:   0x263d5a435c3
+Entry 122:   0x3ebefeacbf4
+Entry 123:   0x2884c862c6
+Entry 124:   0x263d5a435c4
+Entry 125:   0x3ebefeacbf5
+Entry 126:   0x263d5a435c5
+Entry 127:   0x3ebefeacbf6
+Entry 128:   0x1b1bc7990d7
+Entry 129:   0x1b1bc7990d8
+Entry 130:   0x263d5a447db
+Entry 131:   0x3ebefeacc00
+Entry 132:   0x263d5a447dc
+Entry 133:   0x3ebefeacc01
+Entry 134:   0x263d5a447dd
+Entry 135:   0x3ebefeacc02
+Entry 136:   0x263d5a447de
+Entry 137:   0x3ebefeacc03
+Entry 138:   0x263d5a447df
+Entry 139:   0x1b1bc79895d
+Entry 140:   0x3ebefeacc04
+Entry 141:   0x263d5a447e0
+Entry 142:   0x3ebefeacc05
+Entry 143:   0x263d5a447e1
+Entry 144:   0x1b1bc79895f
+Entry 145:   0x3ebefeacc06
+Entry 146:   0x263d5a447e2
+Entry 147:   0x1b1bc798960
+Entry 148:   0x3ebefeacc07
+Entry 149:   0x263d5a447e3
+Entry 150:   0x1b1bc798961
+Entry 151:   0x3ebefeacc08
+Entry 152:   0x263d5a447e4
+Entry 153:   0x1b1bc798962
+Entry 154:   0x3ebefeacc09
+Entry 155:   0x263d5a447e5
+Entry 156:   0x1b1bc798963
+Entry 157:   0x3ebefeacc0a
+Entry 158:   0x263d5a447e6
+Entry 159:   0x1b1bc798964
+Entry 160:   0x3ebefeacc0b
+Entry 161:   0x263d5a447e7
+Entry 162:   0x1b1bc798965
+Entry 163:   0x3ebefeacc0c
+Entry 164:   0x263d5a447e8
+Entry 165:   0x1b1bc798966
+Entry 166:   0x3ebefeacc0d
+Entry 167:   0x263d5a447e9
+Entry 168:   0x1b1bc798967
+Entry 169:   0x3ebefeacc0e
+Entry 170:   0x263d5a447ea
+Entry 171:   0x1b1bc798968
+Entry 172:   0x3ebefeacc0f
+Entry 173:   0x263d5a447eb
+Entry 174:   0x1b1bc798969
+Entry 175:   0x3ebefeacc10
+Entry 176:   0x263d5a447ec
+Entry 177:   0x1b1bc79896a
+Entry 178:   0x3ebefeacc11
+Entry 179:   0x263d5a447ed
+Entry 180:   0x1b1bc79896b
+Entry 181:   0x3ebefeacc12
+Entry 182:   0x263d5a447ee
+Entry 183:   0x1b1bc79896c
+Entry 184:   0x3ebefeacc13
+Entry 185:   0x263d5a447ef
+Entry 186:   0x1b1bc79896d
+Entry 187:   0x3ebefeacc14
+Entry 188:   0x263d5a447f0
+Entry 189:   0x1b1bc79896e
+Entry 190:   0x3ebefeacc15
+Entry 191:   0x263d5a447f1
+Entry 192:   0x1b1bc79896f
+Entry 193:   0x3ebefeacc16
+Entry 194:   0x263d5a447f2
+Entry 195:   0x3ebefeacc17
+Entry 196:   0x263d5a447f3
+Entry 197:   0x3ebefeacc18
+Entry 198:   0x263d5a447f4
+Entry 199:   0x3ebefeacc19
+Entry 200:   0x263d5a447f5
+Entry 201:   0x1b1bc798973
+Entry 202:   0x3ebefeacc1a
+Entry 203:   0x263d5a447f6
+Entry 204:   0x1b1bc798974
+Entry 205:   0x3ebefeacc1b
+Entry 206:   0x263d5a447f7
+Entry 207:   0x1b1bc798975
+Entry 208:   0x3ebefeacc1c
+Entry 209:   0x263d5a447f8
+Entry 210:   0x3ebefeacc1d
+Entry 211:   0x263d5a447f9
+Entry 212:   0x3ebefeacc1e
+Entry 213:   0x263d5a447fa
+Entry 214:   0x3ebefeacc1f
+Entry 215:   0x263d5a447fb
+Entry 216:   0x3ebefeacc20
+Entry 217:   0x263d5a447fc
+Entry 218:   0x3ebefeacc21
+Entry 219:   0x3ebefeacc22
+Entry 220:   0x3ebefeacc23
+Entry 221:   0x3ebefeacc24
+Entry 222:   0x263d5a44700
+Entry 223:   0x3ebefeacc25
+Entry 224:   0x263d5a44701
+Entry 225:   0x3ebefeacc26
+Entry 226:   0x263d5a44702
+Entry 227:   0x263d5a43780
+Entry 228:   0x3ebefeacc27
+Entry 229:   0x263d5a44703
+Entry 230:   0x263d5a43781
+Entry 231:   0x3ebefeacc28
+Entry 232:   0x263d5a44704
+Entry 233:   0x263d5a43782
+Entry 234:   0x3ebefeacc29
+Entry 235:   0x263d5a44705
+Entry 236:   0x263d5a43783
+Entry 237:   0x3ebefeacc2a
+Entry 238:   0x263d5a44706
+Entry 239:   0x263d5a43784
+Entry 240:   0x3ebefeacc2b
+Entry 241:   0x263d5a44707
+Entry 242:   0x263d5a43785
+Entry 243:   0x3ebefeacc2c
+Entry 244:   0x263d5a44708
+Entry 245:   0x3ebefeacc2d
+Entry 246:   0x263d5a44709
+Entry 247:   0x3ebefeacc2e
+Entry 248:   0x263d5a4470a
+Entry 249:   0x3ebefeacc2f
+Entry 250:   0x263d5a4470b
+Entry 251:   0x263d5a43789
+Entry 252:   0x3ebefeacc30
+Entry 253:   0x263d5a4470c
+Entry 254:   0x263d5a4378a
+Entry 255:   0x3ebefeacc31
+
+DRAM Statistics
+ CHANNEL 0
+ RQ ROW_BUFFER_HIT:      78649  ROW_BUFFER_MISS:      93823
+ DBUS_CONGESTED:      49021
+ WQ ROW_BUFFER_HIT:      14421  ROW_BUFFER_MISS:      26796  FULL:          0
+
+ AVG_CONGESTED_CYCLE: 5
+
+CPU 0 Branch Prediction Accuracy: 97.2962% MPKI: 3.10498 Average ROB Occupancy at Mispredict: 120.714
+
+Branch types
+NOT_BRANCH: 44258050 88.5161%
+BRANCH_DIRECT_JUMP: 111187 0.222374%
+BRANCH_INDIRECT: 3160 0.00632%
+BRANCH_CONDITIONAL: 5229105 10.4582%
+BRANCH_DIRECT_CALL: 199252 0.398504%
+BRANCH_INDIRECT_CALL: 0 0%
+BRANCH_RETURN: 199252 0.398504%
+BRANCH_OTHER: 0 0%
+

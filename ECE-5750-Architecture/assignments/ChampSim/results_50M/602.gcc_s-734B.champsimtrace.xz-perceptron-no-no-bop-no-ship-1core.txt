@@ -1,0 +1,870 @@
+
+*** ChampSim Multicore Out-of-Order Simulator ***
+
+Warmup Instructions: 1000000
+Simulation Instructions: 50000000
+Number of CPUs: 1
+LLC sets: 2048
+LLC ways: 16
+Off-chip DRAM Size: 4096 MB Channels: 1 Width: 64-bit Data Rate: 3200 MT/s
+
+CPU 0 runs /home/carter/Documents/Homework/Carter-Owens-ECE-Workbook-Spring-2025/ECE-5750-Architecture/assignments/ChampSim/dpc3_traces/602.gcc_s-734B.champsimtrace.xz
+CPU 0 L2C Best Offset prefetcher
+Initialize SHIP state
+Assign rand_sets[0]: 454  LLC: 2048
+rand_sets[0]: 454
+Assign rand_sets[1]: 1662  LLC: 2048
+rand_sets[1]: 1662
+Assign rand_sets[2]: 1921  LLC: 2048
+rand_sets[2]: 1921
+Assign rand_sets[3]: 1131  LLC: 2048
+rand_sets[3]: 1131
+Assign rand_sets[4]: 331  LLC: 2048
+rand_sets[4]: 331
+Assign rand_sets[5]: 1531  LLC: 2048
+rand_sets[5]: 1531
+Assign rand_sets[6]: 482  LLC: 2048
+rand_sets[6]: 482
+Assign rand_sets[7]: 1275  LLC: 2048
+rand_sets[7]: 1275
+Assign rand_sets[8]: 1876  LLC: 2048
+rand_sets[8]: 1876
+Assign rand_sets[9]: 2038  LLC: 2048
+rand_sets[9]: 2038
+Assign rand_sets[10]: 701  LLC: 2048
+rand_sets[10]: 701
+Assign rand_sets[11]: 479  LLC: 2048
+rand_sets[11]: 479
+Assign rand_sets[12]: 892  LLC: 2048
+rand_sets[12]: 892
+Assign rand_sets[13]: 1820  LLC: 2048
+rand_sets[13]: 1820
+Assign rand_sets[14]: 1505  LLC: 2048
+rand_sets[14]: 1505
+Assign rand_sets[15]: 1159  LLC: 2048
+rand_sets[15]: 1159
+Assign rand_sets[16]: 513  LLC: 2048
+rand_sets[16]: 513
+Assign rand_sets[17]: 703  LLC: 2048
+rand_sets[17]: 703
+Assign rand_sets[18]: 561  LLC: 2048
+rand_sets[18]: 561
+Assign rand_sets[19]: 990  LLC: 2048
+rand_sets[19]: 990
+Assign rand_sets[20]: 342  LLC: 2048
+rand_sets[20]: 342
+Assign rand_sets[21]: 882  LLC: 2048
+rand_sets[21]: 882
+Assign rand_sets[22]: 15  LLC: 2048
+rand_sets[22]: 15
+Assign rand_sets[23]: 71  LLC: 2048
+rand_sets[23]: 71
+Assign rand_sets[24]: 1127  LLC: 2048
+rand_sets[24]: 1127
+Assign rand_sets[25]: 1382  LLC: 2048
+rand_sets[25]: 1382
+Assign rand_sets[26]: 647  LLC: 2048
+rand_sets[26]: 647
+Assign rand_sets[27]: 857  LLC: 2048
+rand_sets[27]: 857
+Assign rand_sets[28]: 1450  LLC: 2048
+rand_sets[28]: 1450
+Assign rand_sets[29]: 1160  LLC: 2048
+rand_sets[29]: 1160
+Assign rand_sets[30]: 1852  LLC: 2048
+rand_sets[30]: 1852
+Assign rand_sets[31]: 1881  LLC: 2048
+rand_sets[31]: 1881
+Assign rand_sets[32]: 1770  LLC: 2048
+rand_sets[32]: 1770
+Assign rand_sets[33]: 1622  LLC: 2048
+rand_sets[33]: 1622
+Assign rand_sets[34]: 275  LLC: 2048
+rand_sets[34]: 275
+Assign rand_sets[35]: 635  LLC: 2048
+rand_sets[35]: 635
+Assign rand_sets[36]: 466  LLC: 2048
+rand_sets[36]: 466
+Assign rand_sets[37]: 1413  LLC: 2048
+rand_sets[37]: 1413
+Assign rand_sets[38]: 417  LLC: 2048
+rand_sets[38]: 417
+Assign rand_sets[39]: 472  LLC: 2048
+rand_sets[39]: 472
+Assign rand_sets[40]: 1340  LLC: 2048
+rand_sets[40]: 1340
+Assign rand_sets[41]: 852  LLC: 2048
+rand_sets[41]: 852
+Assign rand_sets[42]: 1365  LLC: 2048
+rand_sets[42]: 1365
+Assign rand_sets[43]: 47  LLC: 2048
+rand_sets[43]: 47
+Assign rand_sets[44]: 823  LLC: 2048
+rand_sets[44]: 823
+Assign rand_sets[45]: 686  LLC: 2048
+rand_sets[45]: 686
+Assign rand_sets[46]: 1637  LLC: 2048
+rand_sets[46]: 1637
+Assign rand_sets[47]: 1115  LLC: 2048
+rand_sets[47]: 1115
+Assign rand_sets[48]: 986  LLC: 2048
+rand_sets[48]: 986
+Assign rand_sets[49]: 258  LLC: 2048
+rand_sets[49]: 258
+Assign rand_sets[50]: 633  LLC: 2048
+rand_sets[50]: 633
+Assign rand_sets[51]: 920  LLC: 2048
+rand_sets[51]: 920
+Assign rand_sets[52]: 204  LLC: 2048
+rand_sets[52]: 204
+Assign rand_sets[53]: 227  LLC: 2048
+rand_sets[53]: 227
+Assign rand_sets[54]: 1818  LLC: 2048
+rand_sets[54]: 1818
+Assign rand_sets[55]: 886  LLC: 2048
+rand_sets[55]: 886
+Assign rand_sets[56]: 1422  LLC: 2048
+rand_sets[56]: 1422
+Assign rand_sets[57]: 607  LLC: 2048
+rand_sets[57]: 607
+Assign rand_sets[58]: 217  LLC: 2048
+rand_sets[58]: 217
+Assign rand_sets[59]: 1945  LLC: 2048
+rand_sets[59]: 1945
+Assign rand_sets[60]: 143  LLC: 2048
+rand_sets[60]: 143
+Assign rand_sets[61]: 1311  LLC: 2048
+rand_sets[61]: 1311
+Assign rand_sets[62]: 319  LLC: 2048
+rand_sets[62]: 319
+Assign rand_sets[63]: 1846  LLC: 2048
+rand_sets[63]: 1846
+Assign rand_sets[64]: 238  LLC: 2048
+rand_sets[64]: 238
+Assign rand_sets[65]: 67  LLC: 2048
+rand_sets[65]: 67
+Assign rand_sets[66]: 1912  LLC: 2048
+rand_sets[66]: 1912
+Assign rand_sets[67]: 1613  LLC: 2048
+rand_sets[67]: 1613
+Assign rand_sets[68]: 1293  LLC: 2048
+rand_sets[68]: 1293
+Assign rand_sets[69]: 1018  LLC: 2048
+rand_sets[69]: 1018
+Assign rand_sets[70]: 1982  LLC: 2048
+rand_sets[70]: 1982
+Assign rand_sets[71]: 1702  LLC: 2048
+rand_sets[71]: 1702
+Assign rand_sets[72]: 1498  LLC: 2048
+rand_sets[72]: 1498
+Assign rand_sets[73]: 228  LLC: 2048
+rand_sets[73]: 228
+Assign rand_sets[74]: 1414  LLC: 2048
+rand_sets[74]: 1414
+Assign rand_sets[75]: 1166  LLC: 2048
+rand_sets[75]: 1166
+Assign rand_sets[76]: 732  LLC: 2048
+rand_sets[76]: 732
+Assign rand_sets[77]: 297  LLC: 2048
+rand_sets[77]: 297
+Assign rand_sets[78]: 1133  LLC: 2048
+rand_sets[78]: 1133
+Assign rand_sets[79]: 846  LLC: 2048
+rand_sets[79]: 846
+Assign rand_sets[80]: 767  LLC: 2048
+rand_sets[80]: 767
+Assign rand_sets[81]: 1878  LLC: 2048
+rand_sets[81]: 1878
+Assign rand_sets[82]: 993  LLC: 2048
+rand_sets[82]: 993
+Assign rand_sets[83]: 1392  LLC: 2048
+rand_sets[83]: 1392
+Assign rand_sets[84]: 1568  LLC: 2048
+rand_sets[84]: 1568
+Assign rand_sets[85]: 1787  LLC: 2048
+rand_sets[85]: 1787
+Assign rand_sets[86]: 399  LLC: 2048
+rand_sets[86]: 399
+Assign rand_sets[87]: 1201  LLC: 2048
+rand_sets[87]: 1201
+Assign rand_sets[88]: 856  LLC: 2048
+rand_sets[88]: 856
+Assign rand_sets[89]: 773  LLC: 2048
+rand_sets[89]: 773
+Assign rand_sets[90]: 1680  LLC: 2048
+rand_sets[90]: 1680
+Assign rand_sets[91]: 1477  LLC: 2048
+rand_sets[91]: 1477
+Assign rand_sets[92]: 9  LLC: 2048
+rand_sets[92]: 9
+Assign rand_sets[93]: 1500  LLC: 2048
+rand_sets[93]: 1500
+Assign rand_sets[94]: 851  LLC: 2048
+rand_sets[94]: 851
+Assign rand_sets[95]: 973  LLC: 2048
+rand_sets[95]: 973
+Assign rand_sets[96]: 938  LLC: 2048
+rand_sets[96]: 938
+Assign rand_sets[97]: 1851  LLC: 2048
+rand_sets[97]: 1851
+Assign rand_sets[98]: 1608  LLC: 2048
+rand_sets[98]: 1608
+Assign rand_sets[99]: 1945  LLC: 2048
+Assign rand_sets[99]: 1106  LLC: 2048
+rand_sets[99]: 1106
+Assign rand_sets[100]: 979  LLC: 2048
+rand_sets[100]: 979
+Assign rand_sets[101]: 338  LLC: 2048
+rand_sets[101]: 338
+Assign rand_sets[102]: 1693  LLC: 2048
+rand_sets[102]: 1693
+Assign rand_sets[103]: 6  LLC: 2048
+rand_sets[103]: 6
+Assign rand_sets[104]: 671  LLC: 2048
+rand_sets[104]: 671
+Assign rand_sets[105]: 490  LLC: 2048
+rand_sets[105]: 490
+Assign rand_sets[106]: 1461  LLC: 2048
+rand_sets[106]: 1461
+Assign rand_sets[107]: 1730  LLC: 2048
+rand_sets[107]: 1730
+Assign rand_sets[108]: 1030  LLC: 2048
+rand_sets[108]: 1030
+Assign rand_sets[109]: 19  LLC: 2048
+rand_sets[109]: 19
+Assign rand_sets[110]: 920  LLC: 2048
+Assign rand_sets[110]: 329  LLC: 2048
+rand_sets[110]: 329
+Assign rand_sets[111]: 1714  LLC: 2048
+rand_sets[111]: 1714
+Assign rand_sets[112]: 1  LLC: 2048
+rand_sets[112]: 1
+Assign rand_sets[113]: 1822  LLC: 2048
+rand_sets[113]: 1822
+Assign rand_sets[114]: 172  LLC: 2048
+rand_sets[114]: 172
+Assign rand_sets[115]: 1586  LLC: 2048
+rand_sets[115]: 1586
+Assign rand_sets[116]: 648  LLC: 2048
+rand_sets[116]: 648
+Assign rand_sets[117]: 1329  LLC: 2048
+rand_sets[117]: 1329
+Assign rand_sets[118]: 668  LLC: 2048
+rand_sets[118]: 668
+Assign rand_sets[119]: 1874  LLC: 2048
+rand_sets[119]: 1874
+Assign rand_sets[120]: 70  LLC: 2048
+rand_sets[120]: 70
+Assign rand_sets[121]: 661  LLC: 2048
+rand_sets[121]: 661
+Assign rand_sets[122]: 1649  LLC: 2048
+rand_sets[122]: 1649
+Assign rand_sets[123]: 1590  LLC: 2048
+rand_sets[123]: 1590
+Assign rand_sets[124]: 911  LLC: 2048
+rand_sets[124]: 911
+Assign rand_sets[125]: 1367  LLC: 2048
+rand_sets[125]: 1367
+Assign rand_sets[126]: 1782  LLC: 2048
+rand_sets[126]: 1782
+Assign rand_sets[127]: 569  LLC: 2048
+rand_sets[127]: 569
+Assign rand_sets[128]: 1309  LLC: 2048
+rand_sets[128]: 1309
+Assign rand_sets[129]: 534  LLC: 2048
+rand_sets[129]: 534
+Assign rand_sets[130]: 1274  LLC: 2048
+rand_sets[130]: 1274
+Assign rand_sets[131]: 904  LLC: 2048
+rand_sets[131]: 904
+Assign rand_sets[132]: 1908  LLC: 2048
+rand_sets[132]: 1908
+Assign rand_sets[133]: 245  LLC: 2048
+rand_sets[133]: 245
+Assign rand_sets[134]: 1688  LLC: 2048
+rand_sets[134]: 1688
+Assign rand_sets[135]: 1660  LLC: 2048
+rand_sets[135]: 1660
+Assign rand_sets[136]: 1303  LLC: 2048
+rand_sets[136]: 1303
+Assign rand_sets[137]: 1628  LLC: 2048
+rand_sets[137]: 1628
+Assign rand_sets[138]: 1857  LLC: 2048
+rand_sets[138]: 1857
+Assign rand_sets[139]: 187  LLC: 2048
+rand_sets[139]: 187
+Assign rand_sets[140]: 1389  LLC: 2048
+rand_sets[140]: 1389
+Assign rand_sets[141]: 881  LLC: 2048
+rand_sets[141]: 881
+Assign rand_sets[142]: 1166  LLC: 2048
+Assign rand_sets[142]: 1039  LLC: 2048
+rand_sets[142]: 1039
+Assign rand_sets[143]: 1136  LLC: 2048
+rand_sets[143]: 1136
+Assign rand_sets[144]: 601  LLC: 2048
+rand_sets[144]: 601
+Assign rand_sets[145]: 967  LLC: 2048
+rand_sets[145]: 967
+Assign rand_sets[146]: 769  LLC: 2048
+rand_sets[146]: 769
+Assign rand_sets[147]: 283  LLC: 2048
+rand_sets[147]: 283
+Assign rand_sets[148]: 559  LLC: 2048
+rand_sets[148]: 559
+Assign rand_sets[149]: 1075  LLC: 2048
+rand_sets[149]: 1075
+Assign rand_sets[150]: 829  LLC: 2048
+rand_sets[150]: 829
+Assign rand_sets[151]: 1681  LLC: 2048
+rand_sets[151]: 1681
+Assign rand_sets[152]: 1728  LLC: 2048
+rand_sets[152]: 1728
+Assign rand_sets[153]: 541  LLC: 2048
+rand_sets[153]: 541
+Assign rand_sets[154]: 421  LLC: 2048
+rand_sets[154]: 421
+Assign rand_sets[155]: 1037  LLC: 2048
+rand_sets[155]: 1037
+Assign rand_sets[156]: 13  LLC: 2048
+rand_sets[156]: 13
+Assign rand_sets[157]: 1707  LLC: 2048
+rand_sets[157]: 1707
+Assign rand_sets[158]: 1075  LLC: 2048
+Assign rand_sets[158]: 1933  LLC: 2048
+rand_sets[158]: 1933
+Assign rand_sets[159]: 1406  LLC: 2048
+rand_sets[159]: 1406
+Assign rand_sets[160]: 94  LLC: 2048
+rand_sets[160]: 94
+Assign rand_sets[161]: 1423  LLC: 2048
+rand_sets[161]: 1423
+Assign rand_sets[162]: 1854  LLC: 2048
+rand_sets[162]: 1854
+Assign rand_sets[163]: 230  LLC: 2048
+rand_sets[163]: 230
+Assign rand_sets[164]: 104  LLC: 2048
+rand_sets[164]: 104
+Assign rand_sets[165]: 1652  LLC: 2048
+rand_sets[165]: 1652
+Assign rand_sets[166]: 1446  LLC: 2048
+rand_sets[166]: 1446
+Assign rand_sets[167]: 1338  LLC: 2048
+rand_sets[167]: 1338
+Assign rand_sets[168]: 177  LLC: 2048
+rand_sets[168]: 177
+Assign rand_sets[169]: 195  LLC: 2048
+rand_sets[169]: 195
+Assign rand_sets[170]: 1171  LLC: 2048
+rand_sets[170]: 1171
+Assign rand_sets[171]: 1297  LLC: 2048
+rand_sets[171]: 1297
+Assign rand_sets[172]: 1704  LLC: 2048
+rand_sets[172]: 1704
+Assign rand_sets[173]: 100  LLC: 2048
+rand_sets[173]: 100
+Assign rand_sets[174]: 711  LLC: 2048
+rand_sets[174]: 711
+Assign rand_sets[175]: 1243  LLC: 2048
+rand_sets[175]: 1243
+Assign rand_sets[176]: 1738  LLC: 2048
+rand_sets[176]: 1738
+Assign rand_sets[177]: 1504  LLC: 2048
+rand_sets[177]: 1504
+Assign rand_sets[178]: 96  LLC: 2048
+rand_sets[178]: 96
+Assign rand_sets[179]: 1249  LLC: 2048
+rand_sets[179]: 1249
+Assign rand_sets[180]: 1267  LLC: 2048
+rand_sets[180]: 1267
+Assign rand_sets[181]: 1727  LLC: 2048
+rand_sets[181]: 1727
+Assign rand_sets[182]: 1545  LLC: 2048
+rand_sets[182]: 1545
+Assign rand_sets[183]: 1792  LLC: 2048
+rand_sets[183]: 1792
+Assign rand_sets[184]: 1383  LLC: 2048
+rand_sets[184]: 1383
+Assign rand_sets[185]: 1954  LLC: 2048
+rand_sets[185]: 1954
+Assign rand_sets[186]: 739  LLC: 2048
+rand_sets[186]: 739
+Assign rand_sets[187]: 1061  LLC: 2048
+rand_sets[187]: 1061
+Assign rand_sets[188]: 672  LLC: 2048
+rand_sets[188]: 672
+Assign rand_sets[189]: 1057  LLC: 2048
+rand_sets[189]: 1057
+Assign rand_sets[190]: 1329  LLC: 2048
+Assign rand_sets[190]: 1415  LLC: 2048
+rand_sets[190]: 1415
+Assign rand_sets[191]: 981  LLC: 2048
+rand_sets[191]: 981
+Assign rand_sets[192]: 98  LLC: 2048
+rand_sets[192]: 98
+Assign rand_sets[193]: 453  LLC: 2048
+rand_sets[193]: 453
+Assign rand_sets[194]: 1448  LLC: 2048
+rand_sets[194]: 1448
+Assign rand_sets[195]: 79  LLC: 2048
+rand_sets[195]: 79
+Assign rand_sets[196]: 126  LLC: 2048
+rand_sets[196]: 126
+Assign rand_sets[197]: 1582  LLC: 2048
+rand_sets[197]: 1582
+Assign rand_sets[198]: 1289  LLC: 2048
+rand_sets[198]: 1289
+Assign rand_sets[199]: 875  LLC: 2048
+rand_sets[199]: 875
+Assign rand_sets[200]: 404  LLC: 2048
+rand_sets[200]: 404
+Assign rand_sets[201]: 415  LLC: 2048
+rand_sets[201]: 415
+Assign rand_sets[202]: 1712  LLC: 2048
+rand_sets[202]: 1712
+Assign rand_sets[203]: 1389  LLC: 2048
+Assign rand_sets[203]: 169  LLC: 2048
+rand_sets[203]: 169
+Assign rand_sets[204]: 158  LLC: 2048
+rand_sets[204]: 158
+Assign rand_sets[205]: 90  LLC: 2048
+rand_sets[205]: 90
+Assign rand_sets[206]: 1291  LLC: 2048
+rand_sets[206]: 1291
+Assign rand_sets[207]: 838  LLC: 2048
+rand_sets[207]: 838
+Assign rand_sets[208]: 1904  LLC: 2048
+rand_sets[208]: 1904
+Assign rand_sets[209]: 640  LLC: 2048
+rand_sets[209]: 640
+Assign rand_sets[210]: 1462  LLC: 2048
+rand_sets[210]: 1462
+Assign rand_sets[211]: 1487  LLC: 2048
+rand_sets[211]: 1487
+Assign rand_sets[212]: 1863  LLC: 2048
+rand_sets[212]: 1863
+Assign rand_sets[213]: 1036  LLC: 2048
+rand_sets[213]: 1036
+Assign rand_sets[214]: 1702  LLC: 2048
+Assign rand_sets[214]: 933  LLC: 2048
+rand_sets[214]: 933
+Assign rand_sets[215]: 554  LLC: 2048
+rand_sets[215]: 554
+Assign rand_sets[216]: 1496  LLC: 2048
+rand_sets[216]: 1496
+Assign rand_sets[217]: 1708  LLC: 2048
+rand_sets[217]: 1708
+Assign rand_sets[218]: 1275  LLC: 2048
+Assign rand_sets[218]: 416  LLC: 2048
+rand_sets[218]: 416
+Assign rand_sets[219]: 491  LLC: 2048
+rand_sets[219]: 491
+Assign rand_sets[220]: 183  LLC: 2048
+rand_sets[220]: 183
+Assign rand_sets[221]: 1657  LLC: 2048
+rand_sets[221]: 1657
+Assign rand_sets[222]: 1060  LLC: 2048
+rand_sets[222]: 1060
+Assign rand_sets[223]: 626  LLC: 2048
+rand_sets[223]: 626
+Assign rand_sets[224]: 1315  LLC: 2048
+rand_sets[224]: 1315
+Assign rand_sets[225]: 1682  LLC: 2048
+rand_sets[225]: 1682
+Assign rand_sets[226]: 1352  LLC: 2048
+rand_sets[226]: 1352
+Assign rand_sets[227]: 1152  LLC: 2048
+rand_sets[227]: 1152
+Assign rand_sets[228]: 965  LLC: 2048
+rand_sets[228]: 965
+Assign rand_sets[229]: 1190  LLC: 2048
+rand_sets[229]: 1190
+Assign rand_sets[230]: 1191  LLC: 2048
+rand_sets[230]: 1191
+Assign rand_sets[231]: 645  LLC: 2048
+rand_sets[231]: 645
+Assign rand_sets[232]: 695  LLC: 2048
+rand_sets[232]: 695
+Assign rand_sets[233]: 1495  LLC: 2048
+rand_sets[233]: 1495
+Assign rand_sets[234]: 1932  LLC: 2048
+rand_sets[234]: 1932
+Assign rand_sets[235]: 656  LLC: 2048
+rand_sets[235]: 656
+Assign rand_sets[236]: 1508  LLC: 2048
+rand_sets[236]: 1508
+Assign rand_sets[237]: 939  LLC: 2048
+rand_sets[237]: 939
+Assign rand_sets[238]: 355  LLC: 2048
+rand_sets[238]: 355
+Assign rand_sets[239]: 1092  LLC: 2048
+rand_sets[239]: 1092
+Assign rand_sets[240]: 850  LLC: 2048
+rand_sets[240]: 850
+Assign rand_sets[241]: 102  LLC: 2048
+rand_sets[241]: 102
+Assign rand_sets[242]: 1763  LLC: 2048
+rand_sets[242]: 1763
+Assign rand_sets[243]: 668  LLC: 2048
+Assign rand_sets[243]: 51  LLC: 2048
+rand_sets[243]: 51
+Assign rand_sets[244]: 1317  LLC: 2048
+rand_sets[244]: 1317
+Assign rand_sets[245]: 2041  LLC: 2048
+rand_sets[245]: 2041
+Assign rand_sets[246]: 1374  LLC: 2048
+rand_sets[246]: 1374
+Assign rand_sets[247]: 682  LLC: 2048
+rand_sets[247]: 682
+Assign rand_sets[248]: 1466  LLC: 2048
+rand_sets[248]: 1466
+Assign rand_sets[249]: 1139  LLC: 2048
+rand_sets[249]: 1139
+Assign rand_sets[250]: 1632  LLC: 2048
+rand_sets[250]: 1632
+Assign rand_sets[251]: 1117  LLC: 2048
+rand_sets[251]: 1117
+Assign rand_sets[252]: 1611  LLC: 2048
+rand_sets[252]: 1611
+Assign rand_sets[253]: 1905  LLC: 2048
+rand_sets[253]: 1905
+Assign rand_sets[254]: 1662  LLC: 2048
+Assign rand_sets[254]: 446  LLC: 2048
+rand_sets[254]: 446
+Assign rand_sets[255]: 1705  LLC: 2048
+rand_sets[255]: 1705
+
+Warmup complete CPU 0 instructions: 1000004 cycles: 502302 (Simulation time: 0 hr 0 min 1 sec) 
+
+Heartbeat CPU 0 instructions: 10000000 cycles: 10122748 heartbeat IPC: 0.987874 cumulative IPC: 0.935507 (Simulation time: 0 hr 0 min 14 sec) 
+Heartbeat CPU 0 instructions: 20000000 cycles: 20972129 heartbeat IPC: 0.921712 cumulative IPC: 0.928195 (Simulation time: 0 hr 0 min 29 sec) 
+Heartbeat CPU 0 instructions: 30000000 cycles: 31538431 heartbeat IPC: 0.946405 cumulative IPC: 0.934395 (Simulation time: 0 hr 0 min 44 sec) 
+Heartbeat CPU 0 instructions: 40000002 cycles: 42350723 heartbeat IPC: 0.924873 cumulative IPC: 0.931935 (Simulation time: 0 hr 0 min 59 sec) 
+Heartbeat CPU 0 instructions: 50000000 cycles: 52918378 heartbeat IPC: 0.946284 cumulative IPC: 0.934828 (Simulation time: 0 hr 1 min 14 sec) 
+Finished CPU 0 instructions: 50000002 cycles: 53466285 cumulative IPC: 0.935169 (Simulation time: 0 hr 1 min 15 sec) 
+
+ChampSim completed all CPUs
+
+Region of Interest Statistics
+
+CPU 0 cumulative IPC: 0.935169 instructions: 50000002 cycles: 53466285
+L1D TOTAL     ACCESS:   15039413  HIT:   14229123  MISS:     810290
+L1D LOAD      ACCESS:   10023180  HIT:    9212978  MISS:     810202
+L1D RFO       ACCESS:    5016233  HIT:    5016145  MISS:         88
+L1D PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1D WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1D PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1D AVERAGE MISS LATENCY: 16.9161 cycles
+L1I TOTAL     ACCESS:   15723264  HIT:   15723209  MISS:         55
+L1I LOAD      ACCESS:   15723264  HIT:   15723209  MISS:         55
+L1I RFO       ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  ACCESS:          0  HIT:          0  MISS:          0
+L1I WRITEBACK ACCESS:          0  HIT:          0  MISS:          0
+L1I PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:          0  USELESS:          0
+L1I AVERAGE MISS LATENCY: 81.8364 cycles
+L2C TOTAL     ACCESS:    3769395  HIT:    3335185  MISS:     434210
+L2C LOAD      ACCESS:     810257  HIT:     791091  MISS:      19166
+L2C RFO       ACCESS:         88  HIT:         30  MISS:         58
+L2C PREFETCH  ACCESS:    2950972  HIT:    2535987  MISS:     414985
+L2C WRITEBACK ACCESS:       8078  HIT:       8077  MISS:          1
+L2C PREFETCH  REQUESTED:    3079879  ISSUED:    3079877  USEFUL:     387408  USELESS:      27740
+L2C AVERAGE MISS LATENCY: 108.233 cycles
+LLC TOTAL     ACCESS:     437570  HIT:      29938  MISS:     407632
+LLC LOAD      ACCESS:      18813  HIT:       1993  MISS:      16820
+LLC RFO       ACCESS:         58  HIT:          7  MISS:         51
+LLC PREFETCH  ACCESS:     415338  HIT:      25458  MISS:     389880
+LLC WRITEBACK ACCESS:       3361  HIT:       2480  MISS:        881
+LLC PREFETCH  REQUESTED:          0  ISSUED:          0  USEFUL:        270  USELESS:     369285
+LLC AVERAGE MISS LATENCY: 82.3182 cycles
+Major fault: 0 Minor fault: 5904
+CPU 0 L2C BOP prefetcher final stats
+bop_end_phase_max_round 48
+bop_end_phase_max_score 12942
+bop_total_phases 12990
+bop_fill_called 443582
+bop_fill_insert_rr 443582
+bop_insert_rr_hit 0
+bop_insert_rr_evict 443326
+bop_insert_rr_insert 443582
+bop_pref_buffer_buffered 0
+bop_pref_buffer_spilled 0
+bop_pref_buffer_issued 0
+bop_pref_issued 3140502
+
+Entry 0:   0x2293fbbd46b
+Entry 1:   0x2293fbbd46c
+Entry 2:   0x2293fbbd46d
+Entry 3:   0x2293fbbd46e
+Entry 4:   0x2293fbbd46f
+Entry 5:   0x2293fbbd470
+Entry 6:   0x2293fbbd471
+Entry 7:   0x2293fbbd472
+Entry 8:   0x2293fbbd473
+Entry 9:   0x2293fbbd474
+Entry 10:   0x2293fbbd475
+Entry 11:   0x2293fbbd476
+Entry 12:   0x2293fbbd477
+Entry 13:   0x2293fbbd478
+Entry 14:   0x2293fbbd479
+Entry 15:   0x2293fbbd47a
+Entry 16:   0x2293fbbd47b
+Entry 17:   0x2293fbbd47c
+Entry 18:   0x2293fbbd47d
+Entry 19:   0x2293fbbd47e
+Entry 20:   0x2293fbbd47f
+Entry 21:   0x2293fbbd480
+Entry 22:   0x2293fbbd481
+Entry 23:   0x2293fbbd482
+Entry 24:   0x2293fbbd483
+Entry 25:   0x2293fbbd484
+Entry 26:   0x2293fbbd485
+Entry 27:   0x2293fbbd486
+Entry 28:   0x2293fbbd487
+Entry 29:   0x2293fbbd488
+Entry 30:   0x2293fbbd489
+Entry 31:   0x2293fbbd48a
+Entry 32:   0x2293fbbd48b
+Entry 33:   0x2293fbbd48c
+Entry 34:   0x2293fbbd48d
+Entry 35:   0x2293fbbd48e
+Entry 36:   0x2293fbbd48f
+Entry 37:   0x2293fbbd490
+Entry 38:   0x2293fbbd491
+Entry 39:   0x2293fbbd492
+Entry 40:   0x2293fbbd493
+Entry 41:   0x2293fbbd494
+Entry 42:   0x2293fbbd495
+Entry 43:   0x2293fbbd496
+Entry 44:   0x2293fbbd497
+Entry 45:   0x2293fbbd498
+Entry 46:   0x2293fbbd499
+Entry 47:   0x2293fbbd49a
+Entry 48:   0x2293fbbd49b
+Entry 49:   0x2293fbbd49c
+Entry 50:   0x2293fbbd49d
+Entry 51:   0x2293fbbd49e
+Entry 52:   0x2293fbbd49f
+Entry 53:   0x2293fbbd4a0
+Entry 54:   0x2293fbbd4a1
+Entry 55:   0x2293fbbd4a2
+Entry 56:   0x2293fbbd4a3
+Entry 57:   0x2293fbbd4a4
+Entry 58:   0x2293fbbd4a5
+Entry 59:   0x2293fbbd4a6
+Entry 60:   0x2293fbbd4a7
+Entry 61:   0x2293fbbd4a8
+Entry 62:   0x2293fbbd4a9
+Entry 63:   0x2293fbbd4aa
+Entry 64:   0x2293fbbd4ab
+Entry 65:   0x2293fbbd4ac
+Entry 66:   0x2293fbbd4ad
+Entry 67:   0x2293fbbd4ae
+Entry 68:   0x2293fbbd4af
+Entry 69:   0x2293fbbd4b0
+Entry 70:   0x2293fbbd4b1
+Entry 71:   0x2293fbbd4b2
+Entry 72:   0x2293fbbd4b3
+Entry 73:   0x2293fbbd4b4
+Entry 74:   0x2293fbbd4b5
+Entry 75:   0x2293fbbd4b6
+Entry 76:   0x2293fbbd4b7
+Entry 77:   0x2293fbbd4b8
+Entry 78:   0x2293fbbd4b9
+Entry 79:   0x2293fbbd4ba
+Entry 80:   0x2293fbbd4bb
+Entry 81:   0x2293fbbd4bc
+Entry 82:   0x2293fbbd4bd
+Entry 83:   0x2293fbbd4be
+Entry 84:   0x2293fbbd4bf
+Entry 85:   0x2293fbbcfb7
+Entry 86:   0x2293fbbd4c0
+Entry 87:   0x2293fbbd4c1
+Entry 88:   0x2293fbbd4c2
+Entry 89:   0x2293fbbd4c3
+Entry 90:   0x2293fbbd4c4
+Entry 91:   0x2293fbbd4c5
+Entry 92:   0x2293fbbd4c6
+Entry 93:   0x2293fbbd4c7
+Entry 94:   0x2293fbbd4c8
+Entry 95:   0x2293fbbd4c9
+Entry 96:   0x2293fbbd4ca
+Entry 97:   0x2293fbbd4cb
+Entry 98:   0x2293fbbd4cc
+Entry 99:   0x2293fbbd4cd
+Entry 100:   0x2293fbbd4ce
+Entry 101:   0x2293fbbd4cf
+Entry 102:   0x2293fbbd4d0
+Entry 103:   0x2293fbbd4d1
+Entry 104:   0x2293fbbd4d2
+Entry 105:   0x2293fbbd4d3
+Entry 106:   0x2293fbbd4d4
+Entry 107:   0x2293fbbcfb8
+Entry 108:   0x2293fbbd4d5
+Entry 109:   0x2293fbbd4d6
+Entry 110:   0x2293fbbd4d7
+Entry 111:   0x2293fbbd4d8
+Entry 112:   0x2293fbbd4d9
+Entry 113:   0x2293fbbd4da
+Entry 114:   0x2293fbbd4db
+Entry 115:   0x2293fbbd4dc
+Entry 116:   0x2293fbbd4dd
+Entry 117:   0x2293fbbd4de
+Entry 118:   0x2293fbbd4df
+Entry 119:   0x2293fbbd4e0
+Entry 120:   0x2293fbbd4e1
+Entry 121:   0x2293fbbd4e2
+Entry 122:   0x2293fbbd4e3
+Entry 123:   0x2293fbbd4e4
+Entry 124:   0x2293fbbd4e5
+Entry 125:   0x2293fbbcfb9
+Entry 126:   0x2293fbbd4e6
+Entry 127:   0x2293fbbd4e7
+Entry 128:   0x2293fbbd4e8
+Entry 129:   0x2293fbbd4ea
+Entry 130:   0x2293fbbd4e9
+Entry 131:   0x2293fbbd4eb
+Entry 132:   0x2293fbbd4ec
+Entry 133:   0x2293fbbd4ed
+Entry 134:   0x2293fbbd4ee
+Entry 135:   0x2293fbbd4ef
+Entry 136:   0x2293fbbcfba
+Entry 137:   0x2293fbbd4f0
+Entry 138:   0x2293fbbd4f1
+Entry 139:   0x2293fbbd4f2
+Entry 140:   0x2293fbbd4f3
+Entry 141:   0x2293fbbd4f4
+Entry 142:   0x2293fbbd4f5
+Entry 143:   0x2293fbbd4f6
+Entry 144:   0x2293fbbd4f7
+Entry 145:   0x2293fbbd4f8
+Entry 146:   0x2293fbbd4f9
+Entry 147:   0x2293fbbd4fa
+Entry 148:   0x2293fbbd4fb
+Entry 149:   0x2293fbbd4fc
+Entry 150:   0x2293fbbd4fd
+Entry 151:   0x2293fbbd4fe
+Entry 152:   0x2293fbbd4ff
+Entry 153:   0x2293fbbcfbb
+Entry 154:   0x2293fbbd500
+Entry 155:   0x2293fbbd501
+Entry 156:   0x2293fbbd502
+Entry 157:   0x2293fbbd504
+Entry 158:   0x2293fbbd503
+Entry 159:   0x2293fbbd505
+Entry 160:   0x2293fbbd506
+Entry 161:   0x2293fbbd507
+Entry 162:   0x2293fbbd508
+Entry 163:   0x2293fbbd509
+Entry 164:   0x2293fbbd50a
+Entry 165:   0x2293fbbd50b
+Entry 166:   0x2293fbbd50c
+Entry 167:   0x2293fbbd50d
+Entry 168:   0x2293fbbd50e
+Entry 169:   0x2293fbbd50f
+Entry 170:   0x2293fbbd510
+Entry 171:   0x2293fbbd511
+Entry 172:   0x2293fbbd512
+Entry 173:   0x2293fbbd513
+Entry 174:   0x2293fbbd514
+Entry 175:   0x2293fbbd515
+Entry 176:   0x2293fbbd516
+Entry 177:   0x2293fbbd517
+Entry 178:   0x2293fbbd518
+Entry 179:   0x2293fbbd519
+Entry 180:   0x2293fbbd51a
+Entry 181:   0x2293fbbd51b
+Entry 182:   0x2293fbbd51c
+Entry 183:   0x2293fbbd51d
+Entry 184:   0x2293fbbd51e
+Entry 185:   0x2293fbbd51f
+Entry 186:   0x2293fbbd520
+Entry 187:   0x2293fbbd521
+Entry 188:   0x2293fbbd522
+Entry 189:   0x2293fbbd523
+Entry 190:   0x2293fbbd524
+Entry 191:   0x2293fbbd525
+Entry 192:   0x2293fbbd526
+Entry 193:   0x2293fbbd527
+Entry 194:   0x2293fbbd528
+Entry 195:   0x2293fbbd529
+Entry 196:   0x2293fbbd52a
+Entry 197:   0x2293fbbd52b
+Entry 198:   0x2293fbbd52c
+Entry 199:   0x2293fbbd52d
+Entry 200:   0x2293fbbd52e
+Entry 201:   0x2293fbbd52f
+Entry 202:   0x2293fbbd530
+Entry 203:   0x2293fbbd531
+Entry 204:   0x2293fbbd532
+Entry 205:   0x2293fbbd533
+Entry 206:   0x2293fbbd534
+Entry 207:   0x2293fbbd535
+Entry 208:   0x2293fbbd536
+Entry 209:   0x2293fbbd537
+Entry 210:   0x2293fbbd538
+Entry 211:   0x2293fbbd539
+Entry 212:   0x2293fbbd53a
+Entry 213:   0x2293fbbd53b
+Entry 214:   0x2293fbbd53c
+Entry 215:   0x2293fbbd53d
+Entry 216:   0x2293fbbd53e
+Entry 217:   0x2293fbbd53f
+Entry 218:   0x2293fbbd540
+Entry 219:   0x2293fbbd541
+Entry 220:   0x2293fbbd542
+Entry 221:   0x2293fbbd543
+Entry 222:   0x2293fbbd544
+Entry 223:   0x2293fbbd545
+Entry 224:   0x2293fbbd546
+Entry 225:   0x2293fbbd547
+Entry 226:   0x2293fbbd548
+Entry 227:   0x2293fbbd549
+Entry 228:   0x2293fbbd54a
+Entry 229:   0x2293fbbd54b
+Entry 230:   0x2293fbbd54c
+Entry 231:   0x2293fbbd54d
+Entry 232:   0x2293fbbd54e
+Entry 233:   0x2293fbbd54f
+Entry 234:   0x2293fbbcfbc
+Entry 235:   0x2293fbbd550
+Entry 236:   0x2293fbbd551
+Entry 237:   0x2293fbbd552
+Entry 238:   0x2293fbbd553
+Entry 239:   0x2293fbbd555
+Entry 240:   0x2293fbbd554
+Entry 241:   0x2293fbbd556
+Entry 242:   0x2293fbbcfbd
+Entry 243:   0x2293fbbd557
+Entry 244:   0x2293fbbd558
+Entry 245:   0x2293fbbd559
+Entry 246:   0x2293fbbd55a
+Entry 247:   0x2293fbbd55b
+Entry 248:   0x2293fbbd55c
+Entry 249:   0x2293fbbd55d
+Entry 250:   0x2293fbbd55e
+Entry 251:   0x2293fbbd55f
+Entry 252:   0x2293fbbd560
+Entry 253:   0x2293fbbd561
+Entry 254:   0x2293fbbd562
+Entry 255:   0x2293fbbd563
+
+DRAM Statistics
+ CHANNEL 0
+ RQ ROW_BUFFER_HIT:     370523  ROW_BUFFER_MISS:      36229
+ DBUS_CONGESTED:      36433
+ WQ ROW_BUFFER_HIT:        209  ROW_BUFFER_MISS:         85  FULL:          0
+
+ AVG_CONGESTED_CYCLE: 6
+
+CPU 0 Branch Prediction Accuracy: 99.9337% MPKI: 0.15718 Average ROB Occupancy at Mispredict: 102.653
+
+Branch types
+NOT_BRANCH: 38141819 76.2836%
+BRANCH_DIRECT_JUMP: 1246511 2.49302%
+BRANCH_INDIRECT: 0 0%
+BRANCH_CONDITIONAL: 9357212 18.7144%
+BRANCH_DIRECT_CALL: 627230 1.25446%
+BRANCH_INDIRECT_CALL: 0 0%
+BRANCH_RETURN: 627230 1.25446%
+BRANCH_OTHER: 0 0%
+
