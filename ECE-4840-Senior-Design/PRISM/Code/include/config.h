@@ -17,4 +17,8 @@
 #define RECORDING_DURATION_SECONDS 3
 #define FRAMES_TO_RECORD (CAMERA_FRAMERATE * RECORDING_DURATION_SECONDS)
 
+// Network settings
+#define NETWORK_INTERFACE "wlan1"
+#define PAYLOAD_MAX_SIZE 1024  // Max payload size for network packets (for future use)
+
 #endif // CONFIG_H

@@ -1,6 +1,4 @@
-// DEPRECATED: Use h264_encoder.cpp instead
-
-#include "h265_encoder.h"
+#include "h264_encoder.h"
 #include <iostream>
 #include <cstring>
 
@@ -14,20 +12,20 @@ extern "C" {
 
 using namespace std;
 
-H265Encoder::H265Encoder() : codecCtx(nullptr), frame(nullptr), pkt(nullptr), 
+H264Encoder::H264Encoder() : codecCtx(nullptr), frame(nullptr), pkt(nullptr), 
                              formatCtx(nullptr), stream(nullptr), frameCount(0) {}
 
-H265Encoder::~H265Encoder() {
+H264Encoder::~H264Encoder() {
     cleanup();
 }
 
-bool H265Encoder::init(uint32_t width, uint32_t height, uint32_t bitrate, uint32_t framerate) {
+bool H264Encoder::init(uint32_t width, uint32_t height, uint32_t bitrate, uint32_t framerate) {
     this->width = width;
     this->height = height;
     this->framerate = framerate;
 
     // Find hardware encoder on Raspberry Pi
-    // RPi only supports H.264 hardware encoding, not H.265
+    // RPi only supports H.264 hardware encoding
     const AVCodec *codec = avcodec_find_encoder_by_name("h264_v4l2m2m");
     if (!codec) {
         cerr << "Hardware H.264 encoder not found, falling back to software encoder...\n";
@@ -102,7 +100,7 @@ bool H265Encoder::init(uint32_t width, uint32_t height, uint32_t bitrate, uint32
     }
 
     stream->codecpar->codec_type = AVMEDIA_TYPE_VIDEO;
-    stream->codecpar->codec_id = AV_CODEC_ID_HEVC;
+    stream->codecpar->codec_id = AV_CODEC_ID_H264;
     stream->codecpar->width = width;
     stream->codecpar->height = height;
     stream->codecpar->bit_rate = bitrate;
@@ -124,14 +122,14 @@ bool H265Encoder::init(uint32_t width, uint32_t height, uint32_t bitrate, uint32
         return false;
     }
 
-    cout << "H.265 encoder initialized: " << width << "x" << height 
+    cout << "H.264 encoder initialized: " << width << "x" << height 
          << " @ " << bitrate << " bps, " << framerate << " fps\n";
     cout << "Output file: encoded_output.mp4\n";
     
     return true;
 }
 
-bool H265Encoder::encodeFrame(const void *frameData, size_t frameSize) {
+bool H264Encoder::encodeFrame(const void *frameData, size_t frameSize) {
     if (!codecCtx || !frame || !formatCtx) {
         cerr << "Encoder not initialized\n";
         return false;
@@ -184,7 +182,7 @@ bool H265Encoder::encodeFrame(const void *frameData, size_t frameSize) {
     return true;
 }
 
-void H265Encoder::finalize() {
+void H264Encoder::finalize() {
     if (!codecCtx || !formatCtx) {
         return;
     }
@@ -208,7 +206,7 @@ void H265Encoder::finalize() {
     cout << "Encoded " << frameCount << " frames to encoded_output.mp4\n";
 }
 
-void H265Encoder::writePacket(AVPacket *pkt) {
+void H264Encoder::writePacket(AVPacket *pkt) {
     if (!pkt || !stream || !formatCtx) {
         return;
     }
@@ -223,7 +221,7 @@ void H265Encoder::writePacket(AVPacket *pkt) {
     av_packet_unref(pkt);
 }
 
-void H265Encoder::cleanup() {
+void H264Encoder::cleanup() {
     if (formatCtx) {
         if (!(formatCtx->oformat->flags & AVFMT_NOFILE)) {
             avio_closep(&formatCtx->pb);

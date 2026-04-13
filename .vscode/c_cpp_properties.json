@@ -4,7 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
-                "/usr/include/**"
+                "/usr/include/**",
+                "/nix/store/xfn6s8dd4n8jia01fi7vjnspfz33ixf8-libcamera-0.5.0-dev/include/libcamera"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang-19",

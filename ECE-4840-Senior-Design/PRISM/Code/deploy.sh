@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 PI_USER=prism
 PI_HOST=prismvtx.local

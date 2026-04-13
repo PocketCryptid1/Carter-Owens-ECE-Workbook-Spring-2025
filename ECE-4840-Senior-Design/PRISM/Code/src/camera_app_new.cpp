@@ -5,7 +5,6 @@
 #include <sys/mman.h>
 #include <errno.h>
 #include <chrono>
-#include <thread>
 
 using namespace libcamera;
 using namespace std;
@@ -17,26 +16,6 @@ CameraApp::CameraApp() : cameraManager(make_unique<CameraManager>()), pipeline(n
 
 CameraApp::~CameraApp() {
     unmapBuffers();
-}
-
-void CameraApp::stop() {
-    // Stop the camera and pipeline cleanly
-    if (camera) {
-        camera->stop();
-    }
-    if (pipeline) {
-        pipeline->stop();
-    }
-    unmapBuffers();
-    if (allocator) {
-        allocator.reset();
-    }
-    if (camera) {
-        camera->release();
-    }
-    if (cameraManager) {
-        cameraManager->stop();
-    }
 }
 
 int CameraApp::run() {
@@ -147,7 +126,6 @@ int CameraApp::run() {
     // Main loop: Keep application running until interrupted
     // Print stats periodically
     auto lastStats = chrono::steady_clock::now();
-    lastFrameTime = std::chrono::steady_clock::now();
     while (running) {
         usleep(100000);  // 100ms sleep
         
@@ -162,7 +140,13 @@ int CameraApp::run() {
 
     // Graceful shutdown sequence
     cout << "Shutting down...\n";
-    stop();
+    camera->stop();
+    pipeline->stop();
+    unmapBuffers();
+    allocator.reset();
+    camera->release();
+    cameraManager->stop();
+
     return 0;
 }
 
@@ -246,15 +230,6 @@ void CameraApp::onRequestComplete(Request *request) {
                  << frameCounter << " frames). Shutting down...\n";
             running = false;  // Trigger graceful shutdown
         }
-
-        // Real-time pacing: enforce frame interval
-        constexpr int frameIntervalMs = 1000 / CAMERA_FRAMERATE;
-        auto now = std::chrono::steady_clock::now();
-        auto elapsed = std::chrono::duration_cast<std::chrono::milliseconds>(now - lastFrameTime).count();
-        if (elapsed < frameIntervalMs) {
-            std::this_thread::sleep_for(std::chrono::milliseconds(frameIntervalMs - elapsed));
-        }
-        lastFrameTime = std::chrono::steady_clock::now();
     }
 
     // Prepare the request for reuse with the same buffers

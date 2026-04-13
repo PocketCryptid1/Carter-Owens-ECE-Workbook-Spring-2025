@@ -1,7 +1,5 @@
-// DEPRECATED: Use h264_encoder.h instead
-
-#ifndef H265_ENCODER_H
-#define H265_ENCODER_H
+#ifndef H264_ENCODER_H
+#define H264_ENCODER_H
 
 #include <cstdint>
 #include <cstdio>
@@ -14,12 +12,12 @@ struct AVPacket;
 struct AVFormatContext;
 struct AVStream;
 
-// H265Encoder encodes YUV420 frames to H.265 using FFmpeg
+// H264Encoder encodes YUV420 frames to H.264 using FFmpeg
 // Outputs to an MP4 file that can be played directly
-class H265Encoder {
+class H264Encoder {
 public:
-    H265Encoder();
-    ~H265Encoder();
+    H264Encoder();
+    ~H264Encoder();
 
     // Initialize the encoder with specified resolution
     bool init(uint32_t width, uint32_t height, uint32_t bitrate = 5000000, uint32_t framerate = 30);
@@ -44,4 +42,4 @@ private:
     int64_t frameCount;
 };
 
-#endif // H265_ENCODER_H
+#endif // H264_ENCODER_H

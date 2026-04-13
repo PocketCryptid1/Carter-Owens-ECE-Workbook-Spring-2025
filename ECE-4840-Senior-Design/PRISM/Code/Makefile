@@ -1,6 +1,6 @@
 CXX = g++
-CXXFLAGS = -Wall -Wextra -std=c++17 -I$(INCDIR) `pkg-config --cflags libcamera libavcodec libavformat libavutil`
-LDFLAGS = `pkg-config --libs libcamera libavcodec libavformat libavutil`
+CXXFLAGS = -Wall -Wextra -std=c++17 -O2 -I$(INCDIR) `pkg-config --cflags libcamera libavcodec libavformat libavutil`
+LDFLAGS = `pkg-config --libs libcamera libavcodec libavformat libavutil` -lpcap -pthread
 
 INCDIR = include
 SRCDIR = src
@@ -8,7 +8,7 @@ OBJDIR = obj
 BINDIR = bin
 
 TARGET = $(BINDIR)/prismvtx
-SOURCES = $(SRCDIR)/main.cpp $(SRCDIR)/camera_app.cpp $(SRCDIR)/h265_encoder.cpp
+SOURCES = $(SRCDIR)/main.cpp $(SRCDIR)/camera_app.cpp $(SRCDIR)/h264_encoder.cpp
 OBJECTS = $(SOURCES:$(SRCDIR)/%.cpp=$(OBJDIR)/%.o)
 
 all: $(TARGET)
