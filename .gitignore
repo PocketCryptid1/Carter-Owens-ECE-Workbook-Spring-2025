@@ -1,6 +1,5 @@
 *.mkv
 *.zip
-*.pdf
 
 # Trace files
 */*traces/*
