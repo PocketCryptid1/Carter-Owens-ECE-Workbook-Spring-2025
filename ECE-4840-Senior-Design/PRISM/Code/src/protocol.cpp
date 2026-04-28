@@ -12,13 +12,15 @@ Packet::Packet() {
 Packet::Packet(uint32_t framecounter, uint16_t chunknumber, uint16_t totalchunks, 
            const uint8_t* data, uint16_t dataSize, uint8_t flags)
 
-    : header(), payloadSize(dataSize), packetSize(0) {
+    : header(), payloadSize(std::min<uint16_t>(dataSize, PAYLOAD_MAX_SIZE)), packetSize(0) {
 
         header.framecounter = framecounter;
         header.chunknumber = chunknumber;
         header.totalchunks = totalchunks;
         header.headersize = sizeof(PacketHeader);
-    std::memcpy(payload, data, dataSize);
+        header.payloadsize = payloadSize;
+        header.flags = flags;
+    std::memcpy(payload, data, payloadSize);
 }
 
 void Packet::serialize(uint8_t* buffer, size_t bufferSize) {

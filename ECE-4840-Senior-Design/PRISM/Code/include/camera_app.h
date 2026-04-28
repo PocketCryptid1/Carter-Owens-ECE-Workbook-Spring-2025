@@ -29,6 +29,9 @@ public:
     // Returns 0 on success, -1 on any error
     int run();
 
+    // Set callback for encoded H.264 packet bytes.
+    void setEncodedPacketCallback(EncodedPacketCallback callback);
+
     // Stop the camera and pipeline cleanly
     void stop();
 
@@ -57,6 +60,9 @@ private:
 
     // For real-time pacing
     std::chrono::steady_clock::time_point lastFrameTime;
+
+    // Optional encoded packet callback wired into VideoPipeline when available.
+    EncodedPacketCallback encodedPacketCallback;
 };
 
 #endif // CAMERA_APP_H

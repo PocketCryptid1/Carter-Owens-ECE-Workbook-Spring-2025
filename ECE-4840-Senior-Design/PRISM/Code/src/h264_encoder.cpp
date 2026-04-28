@@ -51,15 +51,26 @@ bool H264Encoder::init(uint32_t width, uint32_t height, uint32_t bitrate, uint32
     codecCtx->bit_rate = bitrate;
     codecCtx->time_base = {1, (int)framerate};
     codecCtx->framerate = {(int)framerate, 1};
-    codecCtx->gop_size = 10;
+    codecCtx->gop_size = 5;  // Keyframe every 5 frames (~0.17s at 30fps) for fast freeze recovery
     codecCtx->max_b_frames = 0;
+    codecCtx->thread_count = 1;
+    codecCtx->flags |= AV_CODEC_FLAG_LOW_DELAY;
+    codecCtx->rc_max_rate = bitrate;
+    codecCtx->rc_min_rate = bitrate;
+    codecCtx->rc_buffer_size = bitrate / 4;
 
     // Open encoder
-    if (avcodec_open2(codecCtx, codec, nullptr) < 0) {
+    AVDictionary* opts = nullptr;
+    av_dict_set(&opts, "tune", "zerolatency", 0);
+    av_dict_set(&opts, "preset", "ultrafast", 0);
+    av_dict_set(&opts, "bf", "0", 0);
+    if (avcodec_open2(codecCtx, codec, &opts) < 0) {
+        av_dict_free(&opts);
         cerr << "Failed to open encoder\n";
         avcodec_free_context(&codecCtx);
         return false;
     }
+    av_dict_free(&opts);
 
     // Allocate frame
     frame = av_frame_alloc();
@@ -206,16 +217,18 @@ void H264Encoder::finalize() {
     cout << "Encoded " << frameCount << " frames to encoded_output.mp4\n";
 }
 
+void H264Encoder::setEncodedPacketCallback(EncodedPacketCallback callback) {
+    encodedPacketCallback = std::move(callback);
+}
+
 void H264Encoder::writePacket(AVPacket *pkt) {
     if (!pkt || !stream || !formatCtx) {
         return;
     }
 
-    av_packet_rescale_ts(pkt, codecCtx->time_base, stream->time_base);
-    pkt->stream_index = stream->index;
-
-    if (av_interleaved_write_frame(formatCtx, pkt) < 0) {
-        cerr << "Error writing frame\n";
+    if (encodedPacketCallback && pkt->data && pkt->size > 0) {
+        uint64_t ts = (pkt->pts >= 0) ? static_cast<uint64_t>(pkt->pts) : 0;
+        encodedPacketCallback(pkt->data, static_cast<size_t>(pkt->size), ts);
     }
 
     av_packet_unref(pkt);

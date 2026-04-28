@@ -13,6 +13,7 @@ constexpr uint8_t PROTOCOL_VERSION = 1;
 // Flags bitfield
 constexpr uint8_t FLAG_ACK_REQUESTED = 0x01;
 constexpr uint8_t FLAG_IS_ACK        = 0x02;
+constexpr uint8_t FLAG_IS_H264       = 0x04;
 
 #pragma pack(push, 1)
 class PacketHeader {
@@ -24,11 +25,12 @@ public:
     uint16_t chunknumber;   // Chunk number within the frame
     uint16_t totalchunks;   // Total chunks for this frame
     uint16_t headersize;   // Size of the header in bytes
+    uint16_t payloadsize;   // Size of payload bytes carried in this packet
     uint32_t timestamp;     // Timestamp for the packet
 
     PacketHeader()
         : magic(MAGIC_NUMBER), version(PROTOCOL_VERSION), flags(0),
-          framecounter(0), chunknumber(0), totalchunks(0), headersize(0), timestamp(0) {}
+                    framecounter(0), chunknumber(0), totalchunks(0), headersize(0), payloadsize(0), timestamp(0) {}
 
     bool isValid() const {
         return magic == MAGIC_NUMBER && version == PROTOCOL_VERSION;

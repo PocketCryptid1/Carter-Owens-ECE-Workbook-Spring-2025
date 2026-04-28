@@ -20,7 +20,7 @@ using EncodedPacketCallback = std::function<void(const uint8_t* data, size_t siz
 // Decouples camera capture from encoding to prevent blocking
 class VideoPipeline {
 public:
-    VideoPipeline() : running(false), encoder(nullptr) {}
+    VideoPipeline() : encoder(nullptr), running(false) {}
     
     ~VideoPipeline() {
         stop();
@@ -31,6 +31,10 @@ public:
         encoder = std::make_unique<H264Encoder>();
         if (!encoder->init(width, height, bitrate, framerate)) {
             return false;
+        }
+
+        if (packetCallback) {
+            encoder->setEncodedPacketCallback(packetCallback);
         }
         
         this->width = width;
@@ -70,6 +74,9 @@ public:
     // Set callback for encoded packets (for future transmission)
     void setPacketCallback(EncodedPacketCallback callback) {
         packetCallback = std::move(callback);
+        if (encoder) {
+            encoder->setEncodedPacketCallback(packetCallback);
+        }
     }
 
     // Get statistics
@@ -89,9 +96,6 @@ private:
                 
                 // Encode the frame
                 encoder->encodeFrame(frame->data.data(), FRAME_SIZE);
-                
-                // TODO: When we add transmission, the encoder will produce packets
-                // that we'll pass to the packetCallback
                 
             } else {
                 // No frame available, sleep briefly to avoid busy-waiting

@@ -39,6 +39,13 @@ void CameraApp::stop() {
     }
 }
 
+void CameraApp::setEncodedPacketCallback(EncodedPacketCallback callback) {
+    encodedPacketCallback = std::move(callback);
+    if (pipeline) {
+        pipeline->setPacketCallback(encodedPacketCallback);
+    }
+}
+
 int CameraApp::run() {
     // Start the CameraManager to enumerate all available camera devices
     if (cameraManager->start()) {
@@ -85,6 +92,10 @@ int CameraApp::run() {
     if (!pipeline->init(CAMERA_WIDTH, CAMERA_HEIGHT, VIDEO_BITRATE, CAMERA_FRAMERATE)) {
         cerr << "Failed to initialize video pipeline\n";
         return -1;
+    }
+
+    if (encodedPacketCallback) {
+        pipeline->setPacketCallback(encodedPacketCallback);
     }
 
     // Allocate memory buffers for storing captured frames
@@ -239,9 +250,9 @@ void CameraApp::onRequestComplete(Request *request) {
         // Submit to pipeline (this just copies to ring buffer - very fast)
         pipeline->submitFrame(basePtr, frameSize);
         
-        // Increment frame counter and check if we've reached the target duration
+        // Increment frame counter and optionally stop when a fixed frame limit is set.
         frameCounter++;
-        if (frameCounter >= FRAMES_TO_RECORD) {
+        if (FRAMES_TO_RECORD > 0 && frameCounter >= FRAMES_TO_RECORD) {
             cout << "Recorded " << RECORDING_DURATION_SECONDS << " seconds of video (" 
                  << frameCounter << " frames). Shutting down...\n";
             running = false;  // Trigger graceful shutdown

@@ -11,17 +11,18 @@ This user guide provides complete setup and operation instructions for the PRISM
 - Assemble the transmitter and receiver units
 - Configure the software on both Raspberry Pi units
 - Establish a wireless video connection between transmitter and receiver
-- Stream live video from an onboard camera to a ground receiver with minimal latency
-- Switch between low-latency and high-quality transmission modes
+- Stream live H.264 video from an onboard camera to a ground receiver with ~250ms latency
+- Switch between low-latency mode (no confirmation) and high-quality confirmed mode (ARQ)
+- Monitor link health and diagnose RF performance
 - Troubleshoot common connection and performance issues
 
 ### Is there anything special I need to know?
 
 - **Raspberry Pi experience recommended**: Familiarity with Linux command line and SSH connections is helpful
-- **Network configuration required**: You will need to configure WiFi settings and network parameters
-- **Patience during first setup**: The initial configuration may take 30-45 minutes
+- **Monitor mode required**: Both WiFi adapters must operate in 802.11 monitor mode for packet injection
+- **5 GHz band only**: PRISM operates on 5 GHz channels; 2.4 GHz is not supported
+- **Direct line of sight**: Best performance requires clear line of sight between transmitter and receiver antennas
 - **Power management important**: Ensure both units have adequate power throughout operation
-- **Antenna placement critical**: Proper antenna alignment significantly affects video quality and range
 
 ---
 
@@ -29,40 +30,52 @@ This user guide provides complete setup and operation instructions for the PRISM
 
 ### Transmitter Unit (VTX)
 
-The transmitter unit captures video from a camera and broadcasts it over WiFi.
+![VTX Parts](VTXparts.jpg)
+
+The transmitter unit captures video from a camera, encodes it with H.264, and broadcasts it over 802.11 monitor mode.
 
 **Main Components:**
 
 - **Raspberry Pi Zero 2 W** – Compact single-board computer that processes video
-- **Raspberry Pi Camera Module 3** – CSI-2 camera interface for video capture
+- **Raspberry Pi Camera Module 3 (IMX708)** – CSI-2 camera interface with wide-angle lens
 - **USB WiFi Adapter** (RTL8821AU chipset) – Wireless transmission interface
 - **RHCP Antenna** – Right-hand circularly polarized antenna for transmission
 - **Mounting bracket** – Hardware for drone integration
 
-![Transmitter Unit Assembly](VTXparts.jpg)
+**Processing Pipeline:**
+1. libcamera captures raw video at 320×240, 30 fps
+2. h264_v4l2m2m hardware encoder produces ~400 kbps H.264 stream
+3. PRISM packetizes encoded data into 1024-byte chunks
+4. Packets are injected as 802.11 probe-request frames via pcap monitor mode
 
 ### Receiver Unit (VRX)
 
-The receiver unit captures transmitted video and displays it on a monitor or FPV goggles.
+![VRX Parts](VRXparts.jpg)
+
+The receiver unit captures transmitted packets, reassembles them, decodes H.264, and displays video on HDMI.
 
 **Main Components:**
 
-- **Raspberry Pi Zero 2 W** – Single-board computer for video decoding
+- **Raspberry Pi 4 or Zero 2 W** – Single-board computer for packet capture and decoding
 - **USB WiFi Adapter** (RTL8821AU chipset) – Wireless reception interface
 - **RHCP Antenna** – Right-hand circularly polarized antenna for reception
-- **HDMI output cable** – Connection to monitor or FPV goggles
-- **Cooling case** (optional) – Passive heatsink case for temperature management
+- **Micro-HDMI to HDMI Cable** – Connection to display (1920×1080 framebuffer)
+- **Power supply** – 5V, 2.5A minimum
 
-![Receiver Unit Assembly](VRXparts.jpg)
+**Processing Pipeline:**
+1. Monitor mode capture via pcap with 128KB buffer and immediate mode
+2. Packet filtering by source MAC and magic number
+3. Per-frame chunk reassembly with timeout/abandonment logic
+4. H.264 decode with error concealment (FF_EC_GUESS_MVS | FF_EC_DEBLOCK)
+5. Scaled nearest-neighbor blit to HDMI framebuffer (15 fps rate-limited)
+6. Idle screen fallback after 1.5 seconds of silence
 
-### Software Tools
+### Software Components
 
-The PRISM system uses the following software components:
-
-- *libcamera* – Modern camera interface for Raspberry Pi
-- *FFmpeg* – Video encoding and decoding
-- *WiFi Monitor Mode* – Wireless packet injection for minimal packet overhead
-- *Custom C++ application* – Core PRISM transmitter and receiver software
+- **libcamera** – Modern camera capture interface for Raspberry Pi
+- **FFmpeg (libavcodec/libavutil/libswscale)** – H.264 encoding and decoding
+- **libpcap** – Wireless packet capture and injection
+- **Custom C++17 application** – PRISM encoder, packetizer, decoder, and display logic
 
 ---
 
@@ -73,19 +86,19 @@ The PRISM system uses the following software components:
 | Component | Quantity | Notes |
 |-----------|----------|-------|
 | Raspberry Pi Zero 2 W | 2 | One for transmitter, one for receiver |
-| Raspberry Pi Camera Module 3 | 1 | For transmitter unit only |
+| Raspberry Pi Camera Module 3 (IMX708) | 1 | For transmitter unit only; wide-angle lens |
 | USB WiFi Adapter (RTL8821AU) | 2 | One per Raspberry Pi |
-| RHCP Antenna | 2 | antenna |
+| RHCP Antenna | 2 | One per WiFi adapter |
 | Micro-HDMI to HDMI Cable | 1 | For receiver video output |
 | MicroSD Card (32GB+) | 2 | For operating system storage |
+| USB Power Adapter | 2 | 5V, 2.5A minimum per unit |
 
 ### Software and Tools
 
-- **Raspberry Pi OS lite (Bookworm)** – Official operating system
-- **SSH client** – For remote access (*PuTTY*, *OpenSSH*, or terminal equivalent)
-- **MicroSD card flashing tool** – *Raspberry Pi Imager* or *Etcher*
-- **Text editor** – For configuration file editing
-- **Network configuration utility** – WiFi connection management
+- **Raspberry Pi OS Lite (Bookworm, 64-bit)** – Official operating system
+- **SSH client** – For remote access (OpenSSH, PuTTY, or terminal)
+- **Raspberry Pi Imager** – For flashing microSD cards
+- **Text editor** – For configuration file editing (nano, vim, etc.)
 
 ---
 
@@ -103,12 +116,14 @@ The PRISM system uses the following software components:
 - Avoid static electricity – use an anti-static wrist strap when handling components
 - Do not force connectors; align carefully before inserting
 - Allow adequate ventilation for cooling, especially during extended operation
-- Do not obstruct fan vents if using cooled cases
+- The ribbon cable connectors are fragile—handle with care
 
-**OPERATING SAFETY**
+**RF SAFETY AND REGULATIONS**
 - Do not operate transmitter near hospitals, aircraft, or restricted areas
-- Check local regulations regarding unlicensed wireless operation on 2.4 GHz band
-- Maintain visual line of sight with any associated drone
+- Check local regulations regarding unlicensed wireless operation on 5 GHz band
+- Maintain visual line of sight with any associated drone or vehicle
+- Keep antennas away from people during operation
+- Do not exceed legal RF power limits in your jurisdiction
 
 ---
 
@@ -118,199 +133,326 @@ The PRISM system uses the following software components:
 
 #### Step 1: Prepare the Transmitter Unit
 
-1. Gather transmitter components (Raspberry Pi Zero 2 W, Camera Module 3, WiFi adapter, RHCP antenna)
-2. Verify all components are present and undamaged
+1. Gather transmitter components: Raspberry Pi Zero 2 W, Camera Module 3 (IMX708), WiFi adapter, RHCP antenna
+2. Power is OFF – verify by checking no lights are active
 
-**Information:** Inspect the camera module ribbon cable for any tears or creases. The ribbon cable is fragile and easily damaged.
+3. Insert the camera ribbon cable into the CSI-2 port:
+   - Lift the plastic retention tab on the CSI-2 connector
+   - Align the ribbon cable (contacts face downward on Zero 2 W)
+   - Slide the ribbon in fully
+   - Press the tab down firmly to secure
 
-3. Gently insert the camera ribbon cable into the CSI-2 port on the Raspberry Pi
-   - Open the ribbon cable connector by lifting the small plastic tab
-   - Slide the ribbon cable in fully – the contact side faces downward
-   - Press the tab down firmly to secure the cable
+   **Information:** The connector is stiff on new boards. Ensure the ribbon is straight and fully inserted before closing the tab.
 
-**Information:** The camera connector can be stiff on new boards. Do not force it; ensure the ribbon aligns straight.
+4. Attach the USB WiFi adapter to a USB port using a USB-A to micro-B adapter cable
 
-4. Attach the USB WiFi adapter to the Raspberry Pi using a USB micro-B adapter cable
-5. Attach the RHCP antenna to the WiFi adapter's antenna connector
+5. Attach the RHCP antenna to the WiFi adapter's antenna connector (screw-on type)
+
+6. Verify the camera ribbon is secure and antenna is firmly attached
 
 #### Step 2: Prepare the Receiver Unit
 
-1. Gather receiver components (Raspberry Pi Zero 2 W, WiFi adapter, LHCP antenna, HDMI cable, power cable)
-2. Attach the USB WiFi adapter to the Raspberry Pi
-3. Attach the RHCP antenna to the WiFi adapter
-4. Connect the Micro-HDMI to HDMI cable to the HDMI port on the Raspberry Pi
+1. Gather receiver components: Raspberry Pi (Zero 2 W or 4), WiFi adapter, RHCP antenna, Micro-HDMI to HDMI cable
+2. Power is OFF
 
-**Information:** The Raspberry Pi Zero uses a Micro-HDMI connector, not full-size HDMI.
+3. Attach the USB WiFi adapter to a USB port using a USB-A to micro-B adapter cable
 
-5. Set the receiver unit aside in a safe location
+4. Attach the RHCP antenna to the WiFi adapter's antenna connector
+
+5. Connect the Micro-HDMI to HDMI cable to the Micro-HDMI port on the Raspberry Pi
+   - The connector is keyed; align before inserting
+
+6. Connect the USB power adapter (but do NOT plug it in yet)
+
+7. Set the receiver unit aside in a safe, ventilated location
 
 ### Phase 2: Software Installation
 
 #### Step 3: Flash Operating System
 
-1. Insert a microSD card into your computer
-2. Open *Raspberry Pi Imager*
-3. Click **Choose OS** and select *Raspberry Pi OS (Bookworm, 64-bit)*
+1. Insert a microSD card into your workstation
+
+2. Open **Raspberry Pi Imager** (download from raspberrypi.com if needed)
+
+3. Click **Choose OS** → **Raspberry Pi OS (other)** → **Raspberry Pi OS Lite (64-bit)**
+
 4. Click **Choose Storage** and select your microSD card
-5. Click **Edit Settings** to configure:
-   - Hostname: `prism-vtx` (transmitter) or `prism-vrx` (receiver)
-   - Username: `pi`
-   - Password: (set a secure password)
-   - WiFi SSID: (optional, can configure later)
 
-**Information:** Save your hostname and login credentials. You will need them for remote access.
+5. Click **Edit Settings** (gear icon) to configure:
+   - **Hostname:** `prism-vtx` (transmitter) or `prism-vrx` (receiver)
+   - **Username:** `pi`
+   - **Password:** (set a secure password, e.g., 12+ characters)
+   - **Configure wireless LAN:** (optional, can set up manually later)
+   - **Locale settings:** Your timezone and keyboard layout
 
-6. Click **Write** and wait for the operation to complete
+6. Click **Write** and wait for the operation to complete (5–10 minutes)
+
 7. Eject the microSD card safely
-8. Repeat for the second Raspberry Pi with appropriate hostname
+
+8. Repeat Steps 1–7 for the second Raspberry Pi with the other hostname
 
 #### Step 4: Boot and Initial Network Configuration
 
 1. Insert the flashed microSD card into the Raspberry Pi
-2. Connect the USB power adapter to the Raspberry Pi
-3. Wait 60 seconds for the first boot to complete
-4. Connect to the Raspberry Pi using SSH:
+
+2. Connect the USB power adapter to power on the Raspberry Pi
+
+3. Wait 60 seconds for first boot to complete
+
+4. From your workstation, SSH into the transmitter:
 
        ssh pi@prism-vtx.local
 
-**Information:** The `.local` hostname works if Bonjour/mDNS is available on your network. If that doesn't work, find the IP address using your router's interface or a network scanning tool.
+   (If `.local` doesn't work, find the IP address on your router or use a network scan tool, then: `ssh pi@192.168.x.x`)
 
 5. Enter the password you configured in Step 3
-6. Update the system packages:
+
+6. Update system packages:
 
        sudo apt update && sudo apt upgrade -y
 
-**Information:** This step may take 10-15 minutes. Allow it to complete without interruption.
+   This may take 10–15 minutes. Allow it to complete.
 
-#### Step 5: Install PRISM Software
+7. Repeat Steps 4–6 for the receiver unit (`prism-vrx`)
 
-1. Clone the PRISM repository:
+#### Step 5: Install PRISM Software and Dependencies
+
+1. On the transmitter, SSH in and install build tools and libraries:
+
+       sudo apt install -y build-essential git cmake pkg-config \
+         libcamera-dev libavcodec-extra libavutil-dev libswscale-dev \
+         libpcap-dev libjpeg-dev
+
+   This may take 5–10 minutes.
+
+2. Clone the PRISM repository:
 
        cd ~
-       git clone https://github.com/PrismOrg/PRISM.git
+       git clone github.com/PRISMorg/PRISM
+       cd PRISM/Code
 
-2. Navigate to the project directory:
 
-       cd PRISM
 
-3. Run the setup script:
+3. Compile the PRISM application:
 
-       bash setup-prism-usb.sh
-
-**Information:** This script installs all required dependencies including libcamera, FFmpeg, and development libraries.
-
-4. Compile the PRISM application:
-
-       cd Code
        make clean
-       make
+       make vtx
 
-**Information:** Compilation may take 5-10 minutes on the Raspberry Pi Zero. Do not power off during this time.
+   Compilation may take 5–10 minutes. Do NOT power off during this.
 
-5. Repeat Steps 4 and 5 for the receiver unit (`prism-vrx`)
+4. Verify the binary was created:
 
-### Phase 3: System Configuration and Testing
+       ls -l bin/vtx
+
+5. Repeat Steps 1–4 on the receiver unit, but compile `make vrx` instead
 
 #### Step 6: Configure WiFi Monitor Mode
 
-1. SSH into the transmitter unit:
+This step enables packet injection on 802.11 monitor mode, which is required for PRISM.
+
+1. SSH into the transmitter:
 
        ssh pi@prism-vtx.local
 
-2. Bring down the WiFi interface:
+2. Check the current WiFi interface name:
 
-       sudo ip link set wlan0 down
+       ip link show | grep -i wlan
 
-3. Set the interface to monitor mode:
+   (Usually `wlan0` or `wlan1`)
 
-       sudo iw dev wlan0 set type monitor
+3. Bring down the WiFi interface:
 
-4. Bring the interface back up:
+       sudo ip link set wlan1 down
 
-       sudo ip link set wlan0 up
+4. Set the interface to monitor mode:
 
-5. Verify monitor mode is active:
+       sudo iw dev wlan1 set type monitor
 
-       iw dev wlan0 link
+5. Bring the interface back up:
 
-**Expected output:** Should show `Not connected` and monitor mode enabled.
+       sudo ip link set wlan1 up
 
-**Information:** Monitor mode allows direct packet injection, which is essential for PRISM's minimal overhead transmission.
+6. Verify monitor mode is active:
 
-6. Repeat for the receiver unit on interface `wlan0`
+       iw dev wlan1 link
 
-#### Step 7: Launch Transmitter
+   **Expected output:** Should show `Not connected` and indicate monitor mode is enabled.
 
-1. SSH into the transmitter unit
-2. Start the transmitter application:
+7. Repeat Steps 2–6 on the receiver unit
 
-       cd ~/PRISM/Code
-       ./prism_vtx --mode latency --ssid PRISM --channel 6
+**Information:** Monitor mode must be re-enabled after every reboot. You can automate this by adding the commands to `/etc/rc.local` or a startup systemd service if you prefer.
 
-**Information:** 
-- `--mode latency` enables low-latency mode (no packet confirmation)
-- `--mode quality` enables high-quality mode (with packet confirmation)
-- `--channel 6` selects WiFi channel 6. Adjust based on interference analysis.
-- `--ssid PRISM` sets the broadcast identifier
+### Phase 3: System Operation and Testing
 
-3. Verify the application started successfully – you should see:
+#### Step 7: Launch Transmitter in Low-Latency Mode
 
-       [VTX] Camera initialized
-       [VTX] WiFi interface ready
-       [VTX] Encoding active
+1. SSH into the transmitter:
 
-**Information:** The transmitter will begin capturing video and encoding it immediately.
+       ssh pi@prism-vtx.local
 
-#### Step 8: Launch Receiver
-
-1. SSH into the receiver unit
-2. Connect the HDMI output to your monitor or FPV goggles
-3. Start the receiver application:
+2. Navigate to the PRISM directory:
 
        cd ~/PRISM/Code
-       ./prism_vrx --mode latency --ssid PRISM --channel 6
 
-**Information:** The receiver mode and channel must match the transmitter settings.
+3. Start the transmitter in low-latency mode:
 
-4. Verify the application started:
+       ./bin/vtx --latency
 
-       [VRX] WiFi interface ready
-       [VRX] Waiting for video stream...
+   **Expected output:**
+   ```
+   VTX transmitting on wlan0 — Ctrl+C to stop
+   Confirm mode: OFF
+   Mode: camera+hardware-encoder
+   ```
 
-5. Monitor the receiver terminal for connection status:
+   You should see encoding frames printed to the terminal.
 
-       [VRX] Video stream detected
-       [VRX] Decoding active
-       [VRX] HDMI output ready
+4. Leave this running; the transmitter is now broadcasting H.264 packets
 
-**Information:** You should see video on your monitor within 2-5 seconds of transmitter launch.
+#### Step 8: Launch Receiver in Low-Latency Mode
 
-### Phase 4: Switching Transmission Modes
+1. SSH into the receiver in a new terminal:
 
-#### Step 9: Switch Between Modes
+       ssh pi@prism-vrx.local
 
-**To switch to high-quality mode with packet confirmation:**
+2. Connect your HDMI display to the receiver's Micro-HDMI output if not already done
 
-1. Stop the current application on both units:
+3. Navigate to the PRISM directory:
+
+       cd ~/PRISM/Code
+
+4. Start the receiver in low-latency mode:
+
+       ./bin/vrx
+
+   **Expected output:**
+   ```
+   VRX listening on wlan0...
+   [VRX stats] frames=0 abandoned=0 loss%=0 dup=0 resyncs=0 ok=0 fail=0 skip=0 silence_ms=XXXX
+   ```
+
+5. You should see live video on your HDMI display within 2–5 seconds
+
+6. Monitor the receiver statistics every second:
+   - `frames=` total frames completed
+   - `loss%=` RF packet loss percentage
+   - `ok=` frames successfully displayed
+   - `skip=` frames dropped by rate limiter (15 fps max)
+
+**Information:** Initial "silence_ms" will be large (>1500ms) until first frame arrives; then it should be <50ms.
+
+#### Step 9: Switch to High-Quality (Confirmed) Mode
+
+High-quality mode uses ARQ (automatic repeat request) to confirm packet delivery, resulting in higher latency (~500–1000ms) but more reliable delivery.
+
+1. On the transmitter, stop the current application:
 
        CTRL+C
 
-2. On the transmitter, restart with quality mode:
+2. Restart in quality mode:
 
-       ./prism_vtx --mode quality --ssid PRISM --channel 6
+       ./bin/vtx --quality
 
-3. On the receiver, restart with quality mode:
+   **Expected output:**
+   ```
+   VTX transmitting on wlan0 — Ctrl+C to stop
+   Confirm mode: ON
+   Mode: camera+hardware-encoder
+   ```
 
-       ./prism_vrx --mode quality --ssid PRISM --channel 6
+3. On the receiver, the stats line will now include:
 
-**Information:** Quality mode adds TCP-like packet confirmation, resulting in higher latency (~200-300ms) but more reliable video.
+       ack_tx=XXXX ack_fail=X
 
-**To switch back to latency mode:**
+   where `ack_tx` is the count of ACK packets sent and `ack_fail` is ACK transmission failures.
 
-1. Repeat the same process with `--mode latency`
-2. You should observe lower latency (~50-100ms) with occasional frame drops under poor signal conditions
+4. Latency should increase (you'll see longer delays between camera motion and screen update)
 
-**Information:** Monitor signal strength and adjust antenna positioning to optimize for your environment.
+5. Packet loss should decrease as chunks are retransmitted until ACKed
+
+**Information:** If `ack_fail` climbs rapidly, it indicates the return ACK path is having issues (possibly RF attenuation or interference). Try adjusting antenna positions.
+
+#### Step 10: Switch Back to Low-Latency Mode
+
+1. On the transmitter, stop the application:
+
+       CTRL+C
+
+2. Restart in low-latency mode:
+
+       ./bin/vtx --latency
+
+   (or simply `./bin/vtx` since low-latency is the default)
+
+3. Latency should return to ~250ms
+
+---
+
+## Configuration
+
+### Tunable Parameters
+
+Most configuration is in `include/config.h`. Recompile after changes:
+
+```bash
+make clean && make vtx  # or make vrx
+```
+
+**Key parameters:**
+
+- `CAMERA_WIDTH` / `CAMERA_HEIGHT` – Video resolution (default 320×240)
+- `CAMERA_FRAMERATE` – Encoding framerate (default 30 fps)
+- `VIDEO_BITRATE` – H.264 bitrate in bits/sec (default 400000 = 400 kbps)
+- `TX_RATE_500KBPS_UNITS` – 802.11 TX rate in 500 kbps units (default 12 = 6 Mbps)
+- `ACK_TIMEOUT_MS` – Time to wait for ACK per transmit attempt (default 8 ms)
+- `ACK_MAX_RETRIES` – Maximum retry attempts per chunk in quality mode (default 4)
+- `VRX_MAX_DISPLAY_FPS` – Maximum blit rate to HDMI framebuffer (default 15 fps)
+
+---
+
+## Performance and Diagnostics
+
+### Reading the VRX Stats Line
+
+The receiver prints statistics every second:
+
+```
+[VRX stats] frames=100 abandoned=2 loss%=3 dup=0 resyncs=0 ok=85 fail=0 skip=15 ack_tx=300 ack_fail=0 silence_ms=45
+```
+
+| Field | Meaning |
+|-------|---------|
+| `frames` | Total frames completed (assembled and displayed) |
+| `abandoned` | Frames started but dropped before completion (new frame arrived) |
+| `loss%` | Estimated RF packet loss percentage |
+| `dup` | Duplicate chunks received |
+| `resyncs` | Number of times frame metadata changed unexpectedly |
+| `ok` | Frames successfully decoded and blitted to HDMI |
+| `fail` | Frames that failed to decode |
+| `skip` | Frames dropped by 15 fps display rate limiter |
+| `ack_tx` | ACK packets transmitted (quality mode only) |
+| `ack_fail` | ACK transmission failures (quality mode only) |
+| `silence_ms` | Milliseconds since last packet received |
+
+**Healthy low-latency session:**
+- `loss%` 1–5%
+- `ok` high, `fail` low
+- `silence_ms` <50ms
+
+**Healthy quality-mode session:**
+- `loss%` <1% (due to retransmissions)
+- `ack_tx` and `ack_fail` both present; ratio should be ~100:1 or better
+- Latency ~500–1000ms
+
+### Adjusting for Poor RF Conditions
+
+If you see high loss or frequent abandonment:
+
+1. **Move antennas farther apart** (at least 1–2 feet) to avoid saturation
+2. **Check antenna alignment** – RHCP antennas work best when parallel and vertical
+3. **Reduce bitrate** – Edit `config.h`, set `VIDEO_BITRATE 300000` (300 kbps), recompile
+4. **Reduce resolution** – Set `CAMERA_WIDTH 240 CAMERA_HEIGHT 180`, recompile
+5. **Use quality mode** – ACK retransmissions improve delivery at cost of latency
 
 ---
 
@@ -318,203 +460,210 @@ The PRISM system uses the following software components:
 
 ### Issue: Cannot SSH into Raspberry Pi
 
-**Symptom:** Connection timeout or "host unreachable" error
+**Symptom:** Connection timeout or "host unreachable"
 
 **Solutions:**
-1. Verify the Raspberry Pi is powered on (LED indicator should be lit)
-2. Check that you're on the same network:
-   - On your computer, open a terminal and run: `ping prism-vtx.local`
-   - If no response, find the IP address using your router's connected devices list
-   - SSH directly using IP: `ssh pi@192.168.1.xxx`
-3. Verify SSH is enabled (it is by default in Raspberry Pi OS Bookworm)
-4. Try using the IP address instead of hostname:
-   - `ssh pi@<IP_ADDRESS>`
-5. Restart the Raspberry Pi:
-   - Disconnect power, wait 10 seconds, reconnect
+1. Verify power is on (LED should be lit)
+2. Try ping to check network connectivity:
+
+       ping prism-vtx.local
+
+3. If no response, find the IP on your router or use:
+
+       sudo arp-scan --localnet  # Linux/Mac
+
+4. SSH using IP directly:
+
+       ssh pi@192.168.x.x
+
+5. If still no connection, restart the Pi by disconnecting power, waiting 10 seconds, and reconnecting
 
 ### Issue: Camera Module Not Detected
 
-**Symptom:** Error message "Camera initialization failed" or "No camera detected"
+**Symptom:** "Camera initialization failed" error on VTX startup
 
 **Solutions:**
-1. Power off the Raspberry Pi: `sudo poweroff`
+1. Power off the Raspberry Pi:
+
+       sudo poweroff
+
 2. Verify the camera ribbon cable is fully inserted and aligned
 3. Check that the CSI-2 connector tab is closed securely
 4. Power on and test with:
 
        libcamera-hello --list-cameras
 
-5. If still not detected, try re-seating the ribbon cable:
-   - Power off and unplug
-   - Lift the connector tab on the Raspberry Pi CSI-2 port
-   - Gently remove and re-insert the ribbon cable
+5. If camera is listed but PRISM fails, try re-seating the ribbon:
+   - Power off and disconnect power
+   - Lift the connector tab on the CSI-2 port
+   - Gently remove and re-insert the ribbon (contacts face down)
    - Close the tab firmly
-
-### Issue: WiFi Adapter Not Appearing
-
-**Symptom:** `iw dev` returns no devices or errors about unknown command
-
-**Solutions:**
-1. Verify the WiFi adapter is physically connected to the USB port
-2. Check if it's recognized by the system:
-
-       lsusb | grep -i rtl
-
-3. Verify the RTL8821AU driver is installed:
-
-       modprobe rtl8xxx
-
-4. If driver is missing, reinstall it:
-
-       cd ~/PRISM
-       bash setup-prism-usb.sh
-
-5. Reboot the Raspberry Pi after driver installation:
-
-       sudo reboot
+   - Reconnect power
 
 ### Issue: Monitor Mode Fails to Activate
 
 **Symptom:** Error message when running `iw dev wlan0 set type monitor`
 
 **Solutions:**
-1. Verify the interface name is correct:
+1. Verify the interface name:
 
-       ip link show
+       ip link show | grep wlan
 
-2. Ensure the WiFi interface is down before changing mode:
+2. Ensure the interface is down before changing mode:
 
        sudo ip link set wlan0 down
 
-3. Check for conflicting services (NetworkManager, dhcpcd):
+3. Stop conflicting network services:
 
        sudo systemctl stop NetworkManager
-       sudo systemctl disable NetworkManager
+       sudo systemctl stop dhcpcd
 
-4. Try disabling the interface completely before switching:
+4. Try the mode change again:
 
-       sudo nmcli radio wifi off
+       sudo iw dev wlan0 set type monitor
+       sudo ip link set wlan0 up
 
-5. Verify that your WiFi adapter supports monitor mode:
+5. Verify success:
 
-       iw phy
+       iw dev wlan0 link
 
 ### Issue: No Video Signal on Receiver
 
-**Symptom:** Receiver terminal shows "Waiting for video stream..." but no video appears
+**Symptom:** Receiver says "VRX listening..." but displays idle screen (silence_ms growing)
 
 **Solutions:**
-1. Verify both units are using the same configuration:
-   - Same SSID
-   - Same WiFi channel
-   - Same transmission mode (latency or quality)
-2. Check signal strength on the receiver:
+1. Verify both units are compiled and running:
+   - VTX terminal should show encoding frames
+   - VRX terminal should show stats line updating
 
-       iw wlan0 station dump | grep signal
+2. Check RF signal by examining loss% in VRX stats (should be <50% initially)
 
-3. Increase antenna distance by 1-2 feet and retest (too close can cause saturation)
-4. Verify HDMI connection:
-   - Unplug and reconnect the Micro-HDMI cable firmly
-   - Test with a different HDMI cable if available
-5. Check receiver logs for errors:
+3. Verify monitor mode is active on both units:
 
-       ./prism_vrx --mode latency --ssid PRISM --channel 6 --verbose
+       iw dev wlan0 link
 
-6. Restart both applications:
+4. Restart both applications:
    - Stop both with `CTRL+C`
    - Wait 5 seconds
-   - Restart transmitter first, wait 3 seconds, then receiver
+   - Start VTX first, wait 3 seconds, then start VRX
 
-### Issue: Video Freezes or Stutters
+5. Check for antenna connection:
+   - Verify antenna is screwed on firmly to WiFi adapter
+   - Try moving antennas farther apart (1–2 feet)
+   - Check line of sight between antennas
 
-**Symptom:** Video playback is choppy or freezes intermittently
+6. Verify HDMI connection:
+   - Unplug and reconnect the Micro-HDMI cable firmly
+   - Test with a different HDMI cable if available
+   - Connect to a different display if possible
+
+### Issue: Video Freezes or Artifacts
+
+**Symptom:** Video playback is choppy, freezes intermittently, or shows distorted frames
 
 **Solutions:**
-1. Check transmitter CPU and memory usage:
+1. Check transmitter CPU usage:
 
        top
 
-2. If CPU is >90%, reduce encoding bitrate or resolution
-3. Switch to latency mode if using quality mode (fewer packets to process)
-4. Move antennas farther apart (ensure clear line of sight)
-5. Change WiFi channel to avoid interference:
-   - Try channels 1, 6, or 11 for 2.4GHz
-   - Use a WiFi analyzer app to find less congested channels
-6. Reduce transmission power if experiencing saturation:
+   Press `q` to exit.
 
-       iw reg set US
-       iw phys
+2. If CPU >80%, reduce load:
+   - Reduce framerate in `config.h` (try 15 fps instead of 30)
+   - Reduce resolution (try 240×180)
+   - Reduce bitrate (try 300 kbps)
+   - Recompile and test
 
-### Issue: High Latency in Latency Mode
+3. Improve RF conditions:
+   - Move antennas farther apart
+   - Ensure clear line of sight
+   - Reduce multi-path reflections (move away from metal objects)
 
-**Symptom:** Still experiencing 200+ ms latency when using `--mode latency`
+4. Switch to quality mode for more reliable delivery (but higher latency)
 
-**Solutions:**
-1. Verify latency mode is active on both units
-2. Reduce video resolution in configuration:
-   - Edit the transmitter config file
-   - Lower framerate from 30fps to 15fps if necessary
-3. Check for background processes consuming network bandwidth:
+5. Check for background network traffic:
 
-       iftop -i wlan0
+       iftop -i wlan0  # (install if needed: sudo apt install iftop)
 
-4. Ensure antennas are properly aligned and positioned
-5. Move away from sources of RF interference (microwaves, cordless phones, other WiFi networks)
+### Issue: High Latency Even in Low-Latency Mode
 
-### Issue: Cannot Connect to HDMI Output
-
-**Symptom:** "No signal" message on monitor or blank screen
+**Symptom:** Noticeable delay (>500ms) between camera motion and screen update
 
 **Solutions:**
-1. Verify Micro-HDMI cable is fully inserted
-2. Test with a different HDMI cable (some cables don't support Pi's resolution)
-3. Try a different HDMI input on your monitor
-4. Restart the receiver application
-5. Check if HDMI output is enabled:
+1. Verify you're using low-latency mode:
 
-       tvservice -s
+       # On VTX
+       ./bin/vtx --latency  # or just ./bin/vtx (default)
 
-6. If disabled, enable it:
+2. Check that encoding is hardware-accelerated:
+   - The VTX terminal should print frame info consistently
+   - If dropping frames, CPU may be saturated
 
-       tvservice -p
+3. Reduce resolution or framerate:
+   - Try 240×180 at 15 fps in `config.h`
+   - Recompile and test
+
+4. Check for background processes:
+
+       top -o %CPU  # Sort by CPU usage
+
+5. Move antennas closer together (but not too close, to avoid saturation):
+   - Start at 1–2 feet apart
+   - If signal is weak, increase distance
+
+### Issue: Cannot Recompile or Build Errors
+
+**Symptom:** `make` fails with missing headers or library errors
+
+**Solutions:**
+1. Verify all dependencies are installed:
+
+       sudo apt install -y build-essential git cmake pkg-config \
+         libcamera-dev libavcodec-extra libavutil-dev libswscale-dev \
+         libpcap-dev libjpeg-dev
+
+2. Clean and rebuild:
+
+       make clean
+       make vtx   # or make vrx
+
+3. If you see "cannot find -l<library>", check it's installed:
+
+       dpkg -l | grep libname
+
+4. If still failing, check the Makefile is present:
+
+       ls -la Makefile
 
 ---
 
 ## Conclusion
 
-### What should I have when you're done?
+### What should I have when done?
 
-Upon successful completion of this setup guide, you should have:
+Upon successful completion, you should have:
 
-**Two fully assembled Raspberry Pi units:**
-- Transmitter with camera module and antenna
-- Receiver with HDMI output and antenna
+**Two fully assembled and operational Raspberry Pi units:**
+- Transmitter with camera and WiFi adapter in monitor mode
+- Receiver with HDMI output and WiFi adapter in monitor mode
 
-**Functional software installation:**
-- Both units running PRISM software
-- Monitor mode enabled on WiFi adapters
-- All dependencies properly installed
+**Functional PRISM software:**
+- `bin/vtx` compiled and runnable
+- `bin/vrx` compiled and runnable
+- Both units able to switch between low-latency and quality modes via CLI flags
 
-**Active video transmission:**
-- Live video stream from camera to receiver
-- Selectable transmission modes (latency or quality)
-- Stable WiFi connection between units
-
-**Understanding of operations:**
-- How to launch and stop the transmitter and receiver
-- How to switch between transmission modes
-- How to monitor system performance
-- How to troubleshoot common issues
-
-**Documentation for future reference:**
-- This user guide saved for troubleshooting
-- Network configuration documented
-- WiFi channel and SSID settings recorded
+**Live H.264 video transmission:**
+- Camera video displayed on receiver HDMI output
+- ~250ms latency in low-latency mode
+- <1% packet loss in quality mode with ARQ
+- Idle screen shown on receiver when signal drops for >1.5 seconds
 
 ### Next Steps
 
-- **Optimize your setup:** Adjust antenna positioning and WiFi channels based on your local RF environment
-- **Extend range:** Experiment with high-gain antennas and directional antenna arrays
-- **Customize settings:** Modify encoding parameters for your specific use case
-- **Expand functionality:** Integrate with drone autopilot systems or add additional features
-- **Join the community:** Share your experiences and contribute improvements to the PRISM project
+- **Optimize for your environment:** Adjust antenna placement and distance to minimize loss and latency
+- **Monitor statistics:** Use the VRX stats line to diagnose RF and decode issues
+- **Test quality mode:** Verify ACK delivery improves reliability for longer-range flights
+- **Reduce latency further (advanced):** Consider MJPEG or JPEG-only modes if H.264 pipeline adds too much delay
+- **Add drone integration:** Mount VTX on your drone and verify video quality during flight
+
+For additional support or feature requests, contact the PRISM development team.

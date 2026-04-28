@@ -3,6 +3,7 @@
 
 #include <cstdint>
 #include <cstdio>
+#include <functional>
 
 // Forward declarations for FFmpeg types
 struct AVCodec;
@@ -16,6 +17,8 @@ struct AVStream;
 // Outputs to an MP4 file that can be played directly
 class H264Encoder {
 public:
+    using EncodedPacketCallback = std::function<void(const uint8_t* data, size_t size, uint64_t timestamp)>;
+
     H264Encoder();
     ~H264Encoder();
 
@@ -27,6 +30,9 @@ public:
 
     // Finalize encoding and close file
     void finalize();
+
+    // Optional callback invoked for each encoded packet.
+    void setEncodedPacketCallback(EncodedPacketCallback callback);
 
 private:
     void cleanup();
@@ -40,6 +46,7 @@ private:
     
     uint32_t width, height, framerate;
     int64_t frameCount;
+    EncodedPacketCallback encodedPacketCallback;
 };
 
 #endif // H264_ENCODER_H
